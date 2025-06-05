@@ -1,4 +1,4 @@
-# c:\Users\bapoh\Downloads\russian-notam-parser\proxy_server.py
+
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import requests
 import urllib.parse
@@ -9,6 +9,9 @@ import os
 # Можно сделать более общим, если нужно проксировать к разным хостам,
 # но для данного случая ограничимся FAA.
 ALLOWED_PROXY_HOST = "https://www.notams.faa.gov"
+# Файл для хранения/загрузки данных NOTAM
+DATA_FILE = "notams_data.json" # Переконайтесь, що цей файл існує або буде створений з даними
+
 
 class CORSRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -61,26 +64,28 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 # Другие ошибки запроса (сеть, таймаут и т.д.)
                 self.send_error(502, f"Proxy Error: {e}") # 502 Bad Gateway
             return
-        elif path == "/load_notams":
-            print("Loading NOTAMs from file...")
+        elif self.path == "/load_notams":
+            print(f"Attempting to load NOTAMs from {DATA_FILE}...")
             if os.path.exists(DATA_FILE):
                 try:
-                    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-                    # ensure_ascii=False позволяет сохранять русские символы
-                    json.dump(data, f, indent=2, ensure_ascii=False)
+                    with open(DATA_FILE, 'r', encoding='utf-8') as f: # Відкриваємо на читання
+                        loaded_data = json.load(f) # Завантажуємо дані з файлу
+
                     self.send_response(200)
                     self.send_header("Content-Type", "application/json")
                     self.send_header("Access-Control-Allow-Origin", "*")
                     self.end_headers()
-                    # ensure_ascii=False позволяет сохранять русские символы
-                    self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
-                    print(f"Loaded {len(data)} NOTAMs from {DATA_FILE}")
+                    self.wfile.write(json.dumps(loaded_data, ensure_ascii=False).encode('utf-8'))
+                    print(f"Successfully sent {len(loaded_data)} NOTAMs from {DATA_FILE}")
+                except json.JSONDecodeError as e:
+                    print(f"Error decoding JSON from {DATA_FILE}: {e}")
+                    self.send_error(500, f"Error decoding data file: {e}")
                 except Exception as e:
-                    print(f"Error loading data: {e}")
-                    self.send_error(500, f"Error loading data: {e}")
+                    print(f"Error reading or sending data from {DATA_FILE}: {e}")
+                    self.send_error(500, f"Error processing data file: {e}")
             else:
-                print(f"Data file not found: {DATA_FILE}")
-                # Отправляем 200 с пустым массивом, если файл еще не создан
+                print(f"Data file not found: {DATA_FILE}. Sending empty array.")
+                # Якщо файл не знайдено, відправляємо порожній масив
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self.send_header("Access-Control-Allow-Origin", "*")
@@ -95,7 +100,7 @@ def run(server_class=HTTPServer, handler_class=CORSRequestHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print(f"Starting server on http://localhost:{port}")
-    print(f"Access your HTML at http://localhost:{port}/notam_map.html")
+    print(f"Access your HTML at http://localhost:{port}/index.html")
     print("NOTAM requests will be proxied.")
     httpd.serve_forever()
 

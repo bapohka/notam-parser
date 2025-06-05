@@ -23,6 +23,13 @@
                     <h3>Керування NOTAM</h3>
                     <button id="refresh-notams-button" class="button button--primary">Оновити NOTAM</button>
                     <div class="filter-group">
+                        <label for="airport-filter" class="form-label">Фільтр по аеропорту:</label>
+                        <select id="airport-filter" class="form-control">
+                            <option value="all">Всі аеропорти</option>
+                            <!-- Опції будуть додані динамічно з app.js -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
                         <input type="checkbox" id="filter-new" class="type-filter"> <label for="filter-new">Тільки нові</label>
                     </div>
                     <div>

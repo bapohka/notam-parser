@@ -1,9 +1,24 @@
 
 // Инициализация карты Leaflet
 let map = L.map('map').setView([45, 42], 6);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+// Базовые слои карты
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
-}).addTo(map);
+});
+
+const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+// Добавляем OSM слой по умолчанию
+osmLayer.addTo(map);
+
+// Объект с базовыми слоями для контроллера
+const baseMaps = {
+  "OpenStreetMap": osmLayer,
+  "Супутник": satelliteLayer
+};
 
 // Хранилище данных NOTAM
 let allNotams = []; // Хранит все распарсенные объекты NOTAM
@@ -12,8 +27,9 @@ let newNotamIds = new Set(); // Хранит ID новых NOTAMов после 
 
 
 // Константы
-// Целевой URL для получения NOTAM из FAA
-const TARGET_FAA_URL = "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do?actionType=notamRetrievalbyICAOs&reportType=Raw&retrieveLocId=urrv";
+// Целевой URL для получения NOTAM из FAA для нескольких аэропортов
+const TARGET_ICAOS = "URRV UUOO UUEE UUDD UUWW URWA UUBP"; // Ростов, Воронеж, Москва (ШРМ, ДМД, ВНК), Астрахань, Брянск
+const TARGET_FAA_URL = `https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do?actionType=notamRetrievalbyICAOs&reportType=Raw&retrieveLocId=${TARGET_ICAOS.split(' ').join('%20')}`;
 // URL для запроса через локальный прокси-сервер Python
 const NOTAM_URL = `http://localhost:8000/proxy?url=${encodeURIComponent(TARGET_FAA_URL)}`; // Предполагается, что прокси запущен на 8000 порту
 // Константы для кеширования
@@ -22,6 +38,12 @@ const CACHE_STALE_MINUTES = 15;
 
 // Карта для зіставлення кодів ІКАО з назвами аеропортів (приклади)
 const icaoAirportNameMap = {
+    "UUOO": "Воронеж (Чертовицьке)",
+    "UUEE": "Москва (Шереметьєво)",
+    "UUDD": "Москва (Домодєдово)",
+    "UUWW": "Москва (Внуково)",
+    "URWA": "Астрахань (Наріманово)",
+    "UUBP": "Брянськ",
     "URRV": "Ростов-на-Дону (Платов)", // Приклад. Волгоград - URWW. Ви можете налаштувати це.
     "UKBB": "Київ (Бориспіль)",
     "UKKK": "Київ (Жуляни)",
@@ -68,6 +90,50 @@ function parseLatLon(str) {
   if (lonDir === 'W') lon = -lon;
 
   return { lat, lon };
+}
+
+// Вспомогательная функция для парсинга координат и радиуса из Q-строки (формат DDMMH DDDMMH RRR)
+function parseQLineLatLonRadius(geoStr) {
+    // Паттерн для DDMMH DDDMMH RRR, наприклад, 4645N04411E086
+    // DDMM - широта, H - півкуля (N/S)
+    // DDDMM - довгота, H - півкуля (E/W)
+    // RRR - радіус в морських милях
+    const pattern = /^(\d{4}[NS])(\d{5}[EW])(\d{3})$/;
+    const match = geoStr.match(pattern);
+
+    if (!match) {
+        return null;
+    }
+
+    const latPart = match[1]; // напр., "4645N"
+    const lonPart = match[2]; // напр., "04411E"
+    const radiusPart = match[3]; // напр., "086"
+
+    try {
+        const latDeg = parseInt(latPart.substring(0, 2), 10);
+        const latMin = parseInt(latPart.substring(2, 4), 10);
+        const latHem = latPart.substring(4, 5);
+
+        const lonDeg = parseInt(lonPart.substring(0, 3), 10); // Довгота може мати 3 цифри для градусів
+        const lonMin = parseInt(lonPart.substring(3, 5), 10);
+        const lonHem = lonPart.substring(5, 6);
+
+        const radiusNM = parseInt(radiusPart, 10);
+
+        if (isNaN(latDeg) || isNaN(latMin) || isNaN(lonDeg) || isNaN(lonMin) || isNaN(radiusNM) || radiusNM <= 0) {
+            console.warn("Невірне числове значення в гео-рядку Q-line:", geoStr);
+            return null;
+        }
+
+        let lat = latDeg + latMin / 60.0;
+        if (latHem === 'S') lat = -lat;
+        let lon = lonDeg + lonMin / 60.0;
+        if (lonHem === 'W') lon = -lon;
+        return { center: { lat, lon }, radius: radiusNM * 1852 }; // Радіус в метрах
+    } catch (e) {
+        console.error("Помилка парсингу гео-рядка Q-line:", geoStr, e);
+        return null;
+    }
 }
 
 // Функция для очистки слоев карты
@@ -393,20 +459,32 @@ function parseNotams(htmlText) {
       }
     }
 
-    // Если геометрия не найдена в E, пытаемся извлечь центральную точку/круг из поля Q
-    if (!obj.areaPolygon && !obj.circle && obj.Q) {
+    // Якщо геометрія не знайдена в полі E, намагаємося витягти її з поля Q
+    if (!obj.areaPolygon && !obj.circle && !obj.point && obj.Q) {
       const qParts = obj.Q.split('/');
-      if (qParts.length >= 8) { // Должна быть как минимум часть с координатами
-        const qCoordStr = qParts[7].trim();
-        const centerCoord = parseLatLon(qCoordStr);
-        if (centerCoord && centerCoord.lat != null) { // Проверяем, что parseLatLon вернул валидный объект
-          if (qParts.length >= 9) { // Есть часть с радиусом
-            const qRadiusStr = qParts[8].trim();
-            const radiusNM = parseInt(qRadiusStr, 10);
-            if (!isNaN(radiusNM) && radiusNM > 0) {
-              obj.circle = { center: centerCoord, radius: radiusNM * 1852 }; // радиус в метрах
-            } else { obj.point = centerCoord; } // Валидный центр, но невалидный/отсутствующий радиус
-          } else { obj.point = centerCoord; } // Нет части с радиусом
+      if (qParts.length >= 8) { // Поле Q повинно мати щонайменше 8 частин для геоданих
+        const qGeoStr = qParts[7].trim(); // напр., "4645N04411E086" або "4645N04411E"
+
+        // Спроба 1: Розпарсити як LATLONRADIUS (напр., 4645N04411E086)
+        const qCircleData = parseQLineLatLonRadius(qGeoStr);
+        if (qCircleData) {
+            obj.circle = qCircleData;
+        } else {
+            // Спроба 2: Розпарсити як LATLON, потім перевірити qParts[8] на радіус
+            const centerCoord = parseLatLon(qGeoStr); // Існуюча функція, може спрацювати, якщо qGeoStr - це просто "4645N04411E"
+            if (centerCoord && centerCoord.lat != null) {
+                if (qParts.length >= 9) { // Перевіряємо наявність окремого радіусу в qParts[8]
+                    const qRadiusStr = qParts[8].trim();
+                    const radiusNM = parseInt(qRadiusStr, 10);
+                    if (!isNaN(radiusNM) && radiusNM > 0) {
+                        obj.circle = { center: centerCoord, radius: radiusNM * 1852 }; // радіус в метрах
+                    } else {
+                        obj.point = centerCoord; // Валідний центр, але невалідний/відсутній радіус
+                    }
+                } else {
+                    obj.point = centerCoord; // Немає окремої частини з радіусом
+                }
+            }
         }
       }
     }
@@ -514,21 +592,42 @@ function applyFilters() {
     const showNewOnly = document.getElementById('filter-new')?.checked || false;
     const showUnlimitedHeightOnly = document.getElementById('filter-unlimited-height')?.checked || false;
         // Получаем выбранные типы NOTAM из чекбоксов
-    const selectedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
-    console.log('Применяются фильтры по типам:', selectedTypes, 'Новые:', showNewOnly, 'Без огр. высоты:', showUnlimitedHeightOnly);
+    const typeCheckboxes = document.querySelectorAll('.type-filter'); // Получаем все чекбоксы типов
+    const selectedTypes = Array.from(typeCheckboxes)
+                                .filter(cb => cb.id !== 'filter-new') // Исключаем чекбокс "Только новые"
+                                .filter(cb => cb.checked)
+                                .map(cb => cb.value);
+    const selectedAirport = document.getElementById('airport-filter')?.value || "all";
+
+    console.log('Применяются фильтры - Типи:', selectedTypes, 'Нові:', showNewOnly, 'Без обмеж. висоти:', showUnlimitedHeightOnly, 'Аеропорт:', selectedAirport);
 
     // Фильтруем все загруженные NOTAMы
     const filteredNotams = allNotams.filter(notam => {
         // Если ни один тип не выбран ИЛИ выбранный тип присутствует в списке
-        const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(notam.notamType);
+        // Убедимся, что notam.notamType существует перед проверкой
+        const typeMatch = selectedTypes.length === 0 || (notam.notamType && selectedTypes.includes(notam.notamType));
         const newMatch = !showNewOnly || newNotamIds.has(notam.id);
         const unlimitedHeightMatch = !showUnlimitedHeightOnly || (notam.G && notam.G.toUpperCase() === 'UNL');
-        return typeMatch && newMatch && unlimitedHeightMatch;
+        const airportMatch = selectedAirport === "all" || (notam.A && notam.A.trim() === selectedAirport);
+
+        return typeMatch && newMatch && unlimitedHeightMatch && airportMatch;
     });
 
     // Обновляем карту и список с отфильтрованными NOTAMами
     updateMap(filteredNotams);
     updateNotamList(filteredNotams);
+}
+
+// Функція для заповнення випадаючого списку фільтра аеропортів
+function populateAirportFilter() {
+    const airportFilterSelect = document.getElementById('airport-filter');
+    if (!airportFilterSelect) return;
+
+    TARGET_ICAOS.split(' ').forEach(icao => {
+        const airportName = icaoAirportNameMap[icao] || icao;
+        const option = new Option(`${airportName} (${icao})`, icao);
+        airportFilterSelect.add(option);
+    });
 }
 
 
@@ -636,8 +735,10 @@ async function loadNotam(forceRefresh = false) {
 document.querySelectorAll('.type-filter').forEach(checkbox => {
     checkbox.addEventListener('change', applyFilters);
 });
+// Добавляем слушатели для остальных фильтров
 document.getElementById('filter-new')?.addEventListener('change', applyFilters);
 document.getElementById('filter-unlimited-height')?.addEventListener('change', applyFilters);
+document.getElementById('airport-filter')?.addEventListener('change', applyFilters);
 
 
 // Добавляем слушатель для кнопки "Обновить NOTAM"
@@ -645,8 +746,14 @@ document.getElementById('refresh-notams-button')?.addEventListener('click', () =
     console.log("Запрос на обновление NOTAM вручную...");
     loadNotam(true); // Вызываем функцию загрузки с флагом принудительного обновления
 });
-
 // Запускаем загрузку NOTAMов после полной загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
+    populateAirportFilter(); // Заповнюємо фільтр аеропортів при завантаженні сторінки
     loadNotam(); // Обычный вызов, будет использовать кеш если возможно
 });
+
+// Добавляем контроллер слоев на карту
+L.control.layers(baseMaps).addTo(map);
+
+// Добавляем линейку масштаба на карту (метрическая система, без имперской)
+L.control.scale({ metric: true, imperial: false }).addTo(map);

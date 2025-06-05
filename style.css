@@ -887,26 +887,43 @@ select.form-control {
   width: 100% !important;
 }
 
-/* Map legend */
 .map-legend {
-  position: absolute;
-  top: var(--space-16);
-  right: var(--space-16);
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
-  padding: var(--space-12);
-  box-shadow: var(--shadow-md);
-  z-index: 1000;
-  min-width: 150px;
+    position: absolute;
+    bottom: 30px; /* Відступ від нижнього краю, щоб не перекривати копірайт Leaflet */
+    right: 10px;  /* Відступ від правого краю */
+    background-color: rgba(255, 255, 255, 0.8); /* Напівпрозорий фон для кращої читабельності */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    z-index: 1000; /* Щоб легенда була поверх тайлів карти, але під іншими контролами, якщо потрібно */
 }
 
+/* Якщо потрібно, щоб легенда не була занадто широкою */
 .map-legend h4 {
-  margin: 0 0 var(--space-8) 0;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+    margin-top: 0;
+    margin-bottom: 5px;
 }
+
+.map-legend .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.map-legend .legend-marker {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Кольори маркерів (якщо вони ще не визначені) */
+.map-legend .legend-marker.danger { background-color: red; }
+.map-legend .legend-marker.airport { background-color: green; }
+.map-legend .legend-marker.navigation { background-color: orange; }
+.map-legend .legend-marker.restricted { background-color: purple; }
+
+
 
 .legend-item {
   display: flex;
