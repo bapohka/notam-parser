@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перевірка NOTAM - Парсер та Карта</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Перевірка небезпечних NOTAM - Парсер та Карта зон перекриття біля полігону Капустин Яр</h1>
+            <div class="header-info">
+                <span class="status status--info">Система активна</span>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <!-- Левая боковая панель -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Керування NOTAM</h3>
+                    <button id="refresh-notams-button" class="button button--primary">Оновити NOTAM</button>
+                    <div class="filter-group">
+                        <input type="checkbox" id="filter-new" class="type-filter"> <label for="filter-new">Тільки нові</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="filter-unlimited-height" class="filter-checkbox">
+                        <label for="filter-unlimited-height">Без обмеження по висоті (UNL)</label> <!-- Already in Ukrainian -->
+                    </div>
+                    <!-- Фильтры по типам -->
+                    <div class="filter-group">
+                        <h4>Типи NOTAM</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="type-filter" value="airport" checked>
+                                <span>Аеропорти</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="type-filter" value="danger" checked>
+                                <span>Небезпечні зони</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="type-filter" value="navigation" checked>
+                                <span>Навігація</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="type-filter" value="restricted" checked>
+                                <span>Обмеження</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+ 
+                <!-- Список активных NOTAM -->
+                <div class="sidebar-section">
+                    <h4>Активні NOTAM</h4>
+                    <div id="notam-list" class="notam-list">
+                        <!-- Список будет заполнен динамически -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Основная область с картой -->
+            <div class="map-container">
+                <div id="map" class="map"></div>
+                <div class="map-legend">
+                    <h4>Легенда</h4>
+                    <div class="legend-item">
+                        <div class="legend-marker danger"></div>
+                        <span>Небезпечні зони</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker airport"></div>
+                        <span>Аеропорти</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker navigation"></div>
+                        <span>Навігація</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker restricted"></div>
+                        <span>Обмеження</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
