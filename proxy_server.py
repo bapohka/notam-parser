@@ -5,11 +5,11 @@ import urllib.parse
 import json
 import os
 
-# Целевой URL, к которому будут проксироваться запросы
-# Можно сделать более общим, если нужно проксировать к разным хостам,
-# но для данного случая ограничимся FAA.
+# Цільовий URL, до якого будуть проксуватися запити
+# Можна зробити більш загальним, якщо потрібно проксувати до різних хостів,
+# але для даного випадку обмежимося FAA.
 ALLOWED_PROXY_HOST = "https://www.notams.faa.gov"
-# Файл для хранения/загрузки данных NOTAM
+# Файл для зберігання/завантаження даних NOTAM
 DATA_FILE = "notams_data.json" # Переконайтесь, що цей файл існує або буде створений з даними
 
 
@@ -30,26 +30,26 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
 
             try:
                 print(f"Proxying request to: {target_url}")
-                # Выполняем запрос к целевому серверу
-                # Передаем некоторые заголовки от клиента, если это необходимо,
-                # но для простоты здесь этого не делаем.
+                # Виконуємо запит до цільового сервера
+                # Передаємо деякі заголовки від клієнта, якщо це необхідно,
+                # але для простоти тут цього не робимо.
                 response = requests.get(target_url, timeout=10) # Таймаут 10 секунд
-                response.raise_for_status()  # Вызовет исключение для HTTP-ошибок 4xx/5xx
+                response.raise_for_status()  # Викличе виняток для HTTP-помилок 4xx/5xx
 
-                # Отправляем ответ клиенту
+                # Відправляємо відповідь клієнту
                 self.send_response(response.status_code)
-                # Добавляем необходимый CORS-заголовок
+                # Додаємо необхідний CORS-заголовок
                 self.send_header("Access-Control-Allow-Origin", "*")
 
-                # Копируем другие релевантные заголовки из ответа целевого сервера
-                # Исключаем заголовки, которые могут вызвать проблемы или управляются сервером/прокси
+                # Копіюємо інші релевантні заголовки з відповіді цільового сервера
+                # Виключаємо заголовки, які можуть викликати проблеми або керуються сервером/проксі
                 excluded_headers = [
-                    'content-encoding',      # requests сам обрабатывает распаковку
+                    'content-encoding',      # requests сам обробляє розпакування
                     'transfer-encoding',
                     'connection',
                     'strict-transport-security',
                     'content-security-policy',
-                    'access-control-allow-origin' # Мы устанавливаем его сами
+                    'access-control-allow-origin' # Ми встановлюємо його самі
                 ]
                 for key, value in response.headers.items():
                     if key.lower() not in excluded_headers:
@@ -61,8 +61,8 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 # Ошибка от целевого сервера (4xx, 5xx)
                 self.send_error(e.response.status_code, f"Error from target: {e.response.text[:200]}")
             except requests.exceptions.RequestException as e:
-                # Другие ошибки запроса (сеть, таймаут и т.д.)
-                self.send_error(502, f"Proxy Error: {e}") # 502 Bad Gateway
+                # Інші помилки запиту (мережа, таймаут тощо)
+                self.send_error(502, f"Proxy Error: {e}") # 502 Bad Gateway (Неправильний шлюз)
             return
         elif self.path == "/load_notams":
             print(f"Attempting to load NOTAMs from {DATA_FILE}...")
@@ -93,7 +93,7 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps([]).encode('utf-8'))
             return
         else:
-            # Для всех остальных путей работаем как обычный файловый сервер
+            # Для всіх інших шляхів працюємо як звичайний файловий сервер
             super().do_GET()
 
     def do_POST(self):
@@ -111,14 +111,14 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 if os.path.exists(DATA_FILE):
                     try:
                         with open(DATA_FILE, 'r', encoding='utf-8') as f:
-                            file_content = f.read().strip()
-                            if file_content: # Проверяем, не пустой ли файл после удаления пробелов
+                            file_content = f.read().strip() # Читаємо вміст файлу та видаляємо зайві пробіли
+                            if file_content: # Перевіряємо, чи файл не порожній після видалення пробілів
                                 existing_data = json.loads(file_content)
                                 if not isinstance(existing_data, list):
                                     print(f"Warning: {DATA_FILE} не содержал валидный JSON список. Инициализация как пустого списка.")
                                     existing_data = []
                             else:
-                                existing_data = [] # Файл пуст или содержит только пробелы
+                                existing_data = [] # Файл порожній або містить лише пробіли
                     except json.JSONDecodeError:
                         print(f"Warning: Не удалось декодировать JSON из {DATA_FILE}. Инициализация как пустого списка.")
                         existing_data = []
@@ -126,9 +126,9 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                         print(f"Ошибка чтения {DATA_FILE}, инициализация как пустого списка: {e}")
                         existing_data = []
                 
-                # Логика: новые NOTAMы (new_notams_from_client) помещаются в начало.
-                # Старые NOTAMы из файла (existing_data), которых нет в new_notams_from_client, добавляются в конец.
-                # Это предотвращает дублирование, если NOTAM из новой пачки уже был в файле (используется новая версия).
+                # Логіка: нові NOTAMи (new_notams_from_client) розміщуються на початку.
+                # Старі NOTAMи з файлу (existing_data), яких немає в new_notams_from_client, додаються в кінець.
+                # Це запобігає дублюванню, якщо NOTAM з нової пачки вже був у файлі (використовується нова версія).
                 
                 new_notam_ids_from_client = {notam.get('id') for notam in new_notams_from_client if notam.get('id')}
                 
@@ -153,13 +153,13 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
             except json.JSONDecodeError:
                 self.send_error(400, "Bad Request: Invalid JSON.")
             except Exception as e:
-                print(f"Internal Server Error on POST: {e}") # Логируем ошибку на сервере
+                print(f"Internal Server Error on POST: {e}") # Логуємо помилку на сервері
                 self.send_error(500, f"Internal Server Error: {str(e)}")
             return
         else:
             self.send_error(404, "Not Found")
 
-    def do_OPTIONS(self): # Для обработки CORS preflight-запросов
+    def do_OPTIONS(self): # Для обробки CORS preflight-запитів
         self.send_response(200, "ok")
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
@@ -175,6 +175,6 @@ def run(server_class=HTTPServer, handler_class=CORSRequestHandler, port=8000):
     httpd.serve_forever()
 
 if __name__ == '__main__':
-    # Убедитесь, что у вас установлена библиотека requests:
+    # Переконайтеся, що у вас встановлена бібліотека requests:
     # pip install requests
     run()
