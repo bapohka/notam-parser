@@ -96,6 +96,76 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
             # Для всех остальных путей работаем как обычный файловый сервер
             super().do_GET()
 
+    def do_POST(self):
+        if self.path == "/save_notams_on_server":
+            try:
+                content_length = int(self.headers['Content-Length'])
+                post_data_bytes = self.rfile.read(content_length)
+                new_notams_from_client = json.loads(post_data_bytes.decode('utf-8'))
+
+                if not isinstance(new_notams_from_client, list):
+                    self.send_error(400, "Bad Request: Expected a JSON list of NOTAMs.")
+                    return
+
+                existing_data = []
+                if os.path.exists(DATA_FILE):
+                    try:
+                        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+                            file_content = f.read().strip()
+                            if file_content: # Проверяем, не пустой ли файл после удаления пробелов
+                                existing_data = json.loads(file_content)
+                                if not isinstance(existing_data, list):
+                                    print(f"Warning: {DATA_FILE} не содержал валидный JSON список. Инициализация как пустого списка.")
+                                    existing_data = []
+                            else:
+                                existing_data = [] # Файл пуст или содержит только пробелы
+                    except json.JSONDecodeError:
+                        print(f"Warning: Не удалось декодировать JSON из {DATA_FILE}. Инициализация как пустого списка.")
+                        existing_data = []
+                    except Exception as e:
+                        print(f"Ошибка чтения {DATA_FILE}, инициализация как пустого списка: {e}")
+                        existing_data = []
+                
+                # Логика: новые NOTAMы (new_notams_from_client) помещаются в начало.
+                # Старые NOTAMы из файла (existing_data), которых нет в new_notams_from_client, добавляются в конец.
+                # Это предотвращает дублирование, если NOTAM из новой пачки уже был в файле (используется новая версия).
+                
+                new_notam_ids_from_client = {notam.get('id') for notam in new_notams_from_client if notam.get('id')}
+                
+                old_notams_to_keep = [
+                    notam for notam in existing_data 
+                    if notam.get('id') not in new_notam_ids_from_client
+                ]
+                
+                combined_data = new_notams_from_client + old_notams_to_keep
+
+                with open(DATA_FILE, 'w', encoding='utf-8') as f:
+                    json.dump(combined_data, f, ensure_ascii=False, indent=4)
+
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                response_message = {"message": f"Успешно сохранено/обновлено {len(new_notams_from_client)} NOTAMов. Всего в файле: {len(combined_data)}."}
+                self.wfile.write(json.dumps(response_message).encode('utf-8'))
+                print(f"Данные сохранены в {DATA_FILE}. Получено {len(new_notams_from_client)}, всего в файле {len(combined_data)}.")
+
+            except json.JSONDecodeError:
+                self.send_error(400, "Bad Request: Invalid JSON.")
+            except Exception as e:
+                print(f"Internal Server Error on POST: {e}") # Логируем ошибку на сервере
+                self.send_error(500, f"Internal Server Error: {str(e)}")
+            return
+        else:
+            self.send_error(404, "Not Found")
+
+    def do_OPTIONS(self): # Для обработки CORS preflight-запросов
+        self.send_response(200, "ok")
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+        self.end_headers()
+
 def run(server_class=HTTPServer, handler_class=CORSRequestHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)

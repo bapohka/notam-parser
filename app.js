@@ -28,10 +28,9 @@ let newNotamIds = new Set(); // Хранит ID новых NOTAMов после 
 
 // Константы
 // Целевой URL для получения NOTAM из FAA для нескольких аэропортов
-const TARGET_ICAOS = "URRV UUOO UUEE UUDD UUWW URWA UUBP"; // Ростов, Воронеж, Москва (ШРМ, ДМД, ВНК), Астрахань, Брянск
-const TARGET_FAA_URL = `https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do?actionType=notamRetrievalbyICAOs&reportType=Raw&retrieveLocId=${TARGET_ICAOS.split(' ').join('%20')}`;
+const TARGET_ICAOS_STRING = "URRV UUOO UUEE UUDD UUWW URWA UUBP"; // Ростов, Воронеж, Москва (ШРМ, ДМД, ВНК), Астрахань, Брянск
 // URL для запроса через локальный прокси-сервер Python
-const NOTAM_URL = `http://localhost:8000/proxy?url=${encodeURIComponent(TARGET_FAA_URL)}`; // Предполагается, что прокси запущен на 8000 порту
+// const NOTAM_URL = `http://localhost:8000/proxy?url=${encodeURIComponent(TARGET_FAA_URL)}`; // Больше не используется напрямую
 // Константы для кеширования
 const CACHE_KEY = 'notamCache';
 const CACHE_STALE_MINUTES = 15;
@@ -44,7 +43,7 @@ const icaoAirportNameMap = {
     "UUWW": "Москва (Внуково)",
     "URWA": "Астрахань (Наріманово)",
     "UUBP": "Брянськ",
-    "URRV": "Ростов-на-Дону (Платов)", // Приклад. Волгоград - URWW. Ви можете налаштувати це.
+    "URRV": "Ростов-на-Дону (Платов)", 
     "UKBB": "Київ (Бориспіль)",
     "UKKK": "Київ (Жуляни)",
     // Додайте сюди інші аеропорти за потреби
@@ -342,7 +341,8 @@ function parseNotams(htmlText) {
     }
 
     const idLine = contentLines[0].trim();
-    if (!/N\d{4,5}\/\d{2} NOTAM[NRC]/.test(idLine)) {
+    // Разрешаем любую заглавную букву в начале ID, добавляем ^ для начала строки и \s+ для пробела перед NOTAM[NRC]
+    if (!/^[A-Z]\d{4,5}\/\d{2}\s+NOTAM[NRC]/.test(idLine)) {
         console.warn("Пропуск блока: не начинается с валидного ID NOTAM:", idLine);
         return; // Невалидный блок NOTAM
     }
@@ -623,13 +623,40 @@ function populateAirportFilter() {
     const airportFilterSelect = document.getElementById('airport-filter');
     if (!airportFilterSelect) return;
 
-    TARGET_ICAOS.split(' ').forEach(icao => {
+    TARGET_ICAOS_STRING.split(' ').forEach(icao => {
         const airportName = icaoAirportNameMap[icao] || icao;
         const option = new Option(`${airportName} (${icao})`, icao);
         airportFilterSelect.add(option);
     });
 }
 
+// Функция для отправки распарсенных NOTAMов на сервер для сохранения
+async function saveNotamsToServer(notamsToSave) {
+  if (!notamsToSave || notamsToSave.length === 0) {
+    console.log("Нет NOTAMов для сохранения на сервере.");
+    return;
+  }
+  try {
+    // Предполагается, что ваш Python прокси-сервер запущен на порту 8000
+    const response = await fetch('http://localhost:8000/save_notams_on_server', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(notamsToSave),
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Ошибка сервера при сохранении NOTAMов: ${response.status} ${errorText}`);
+    }
+    const result = await response.json();
+    console.log("NOTAMы успешно отправлены на сервер:", result.message || "Сохранено");
+  } catch (error) {
+    console.error("Ошибка при отправке NOTAMов на сервер:", error);
+    // Можно добавить уведомление для пользователя, если необходимо
+    // alert(`Не удалось сохранить NOTAMы на сервере: ${error.message}`);
+  }
+}
 
 // Функция для загрузки NOTAMов с источника
 async function loadNotam(forceRefresh = false) {
@@ -672,21 +699,57 @@ async function loadNotam(forceRefresh = false) {
     if (cachedItem) try { cachedNotamsData = JSON.parse(cachedItem); } catch (e) { /*ignore*/ }
   }
 
-  // Если дошли сюда, значит, нужно загружать с сервера
+  // Если дошли сюда, значит, нужно загружать с сервера для каждого ICAO
+  const icaoList = TARGET_ICAOS_STRING.split(' ');
+  let accumulatedParsedNotams = [];
+  let fetchErrors = [];
+
+  // Определяем ID ранее известных NOTAMов (из устаревшего кеша или пустого списка)
+  const previouslyKnownNotamIds = new Set(
+    (cachedNotamsData && cachedNotamsData.notams) ? cachedNotamsData.notams.map(n => n.id) : []
+  );
+
   try {
-    let resp = await fetch(NOTAM_URL);
-    if (!resp.ok) {
-      throw new Error(`HTTP error! status: ${resp.status}`);
+    for (const icao of icaoList) {
+      const singleIcaoFaaUrl = `https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do?actionType=notamRetrievalbyICAOs&reportType=Raw&retrieveLocId=${icao}`;
+      const singleIcaoProxyUrl = `http://localhost:8000/proxy?url=${encodeURIComponent(singleIcaoFaaUrl)}`;
+      console.log(`Загрузка NOTAM для ${icao} через ${singleIcaoProxyUrl}`);
+
+      try {
+        let resp = await fetch(singleIcaoProxyUrl);
+        if (!resp.ok) {
+          throw new Error(`HTTP error! status: ${resp.status} for ${icao}`);
+        }
+        let text = await resp.text();
+        const parsedForIcao = parseNotams(text);
+        accumulatedParsedNotams.push(...parsedForIcao);
+        console.log(`Загружено и распарсено ${parsedForIcao.length} NOTAMов для ${icao}.`);
+      } catch (e) {
+        console.error(`Ошибка загрузки NOTAM для ${icao}:`, e);
+        fetchErrors.push({ icao, error: e.message });
+      }
     }
-    let text = await resp.text();
 
-    // Определяем ID ранее известных NOTAMов (из устаревшего кеша или пустого списка)
-    const previouslyKnownNotamIds = new Set(
-      (cachedNotamsData && cachedNotamsData.notams) ? cachedNotamsData.notams.map(n => n.id) : []
-    );
+    if (fetchErrors.length > 0) {
+      let errorSummary = fetchErrors.map(err => `${err.icao}: ${err.error}`).join('; ');
+      console.warn(`Произошли ошибки при загрузке NOTAMов для некоторых аэропортов: ${errorSummary}`);
+      // Можно вывести alert, если все запросы не удались, или если это критично
+      if (fetchErrors.length === icaoList.length) {
+        throw new Error("Не удалось загрузить NOTAMы ни для одного аэропорта. " + errorSummary);
+      }
+    }
 
-    const freshParsedNotams = parseNotams(text); // Это окончательный список с сервера
-    allNotams = freshParsedNotams; // Обновляем глобальный allNotams свежими данными
+    // Дедупликация NOTAMов по ID, так как один NOTAM может быть получен для разных аэропортов
+    const uniqueNotamMap = new Map();
+    accumulatedParsedNotams.forEach(notam => {
+      if (!uniqueNotamMap.has(notam.id)) {
+        uniqueNotamMap.set(notam.id, notam);
+      }
+    });
+    allNotams = Array.from(uniqueNotamMap.values());
+
+    // Отправляем свежераспарсенные NOTAMы на сервер для сохранения в notams_data.json
+    await saveNotamsToServer(allNotams);
 
     newNotamIds.clear();
     allNotams.forEach(notam => {
@@ -694,32 +757,31 @@ async function loadNotam(forceRefresh = false) {
         newNotamIds.add(notam.id);
       }
     });
-
-    console.log(`Загружено и распарсено ${allNotams.length} NOTAMов с сервера. Новых: ${newNotamIds.size}`);
+    console.log(`Всего загружено и распарсено ${allNotams.length} уникальных NOTAMов. Новых: ${newNotamIds.size}`);
 
     // Сохраняем свежезагруженные и обработанные NOTAMы в кеш
     try {
       const newCacheEntry = {
         lastUpdated: new Date().toISOString(),
-        notams: allNotams
+        notams: allNotams // Сохраняем объединенный и дедуплицированный список
       };
       localStorage.setItem(CACHE_KEY, JSON.stringify(newCacheEntry));
-      console.log("NOTAMы сохранены в кеш.");
+      console.log("Объединенные NOTAMы сохранены в кеш.");
     } catch (e) {
       console.error("Ошибка сохранения в кеш:", e);
       if (e.name === 'QuotaExceededError') {
         alert('Не удалось сохранить NOTAMы в локальное хранилище: превышена квота.');
       }
     }
-
     applyFilters(); // Применяем начальные фильтры и отображаем на карте/в списке
+
   } catch (e) {
     console.error('Ошибка загрузки или парсинга NOTAM с сервера:', e);
     alert('Ошибка загрузки с сервера: ' + e.message + '. Отображаются данные из устаревшего кеша (если есть) или пустой список.');
     // Если загрузка с сервера не удалась, пытаемся использовать устаревший кеш как запасной вариант
     if (cachedNotamsData && cachedNotamsData.notams) {
       allNotams = cachedNotamsData.notams; // Возвращаемся к устаревшему кешу
-      newNotamIds.clear(); // В этом случае "новых" нет
+      newNotamIds.clear(); // В этом случае "новых" нет относительно этого кеша
       console.warn("Используются данные из устаревшего кеша из-за ошибки сервера.");
       applyFilters();
     } else {
