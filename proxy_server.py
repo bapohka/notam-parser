@@ -30,10 +30,15 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
 
             try:
                 print(f"Proxying request to: {target_url}")
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"
+                }
                 # Виконуємо запит до цільового сервера
                 # Передаємо деякі заголовки від клієнта, якщо це необхідно,
                 # але для простоти тут цього не робимо.
-                response = requests.get(target_url, timeout=10) # Таймаут 10 секунд
+                # Збільшуємо таймаут до 30 секунд (10 для з'єднання, 20 для читання)
+                # і додаємо User-Agent
+                response = requests.get(target_url, headers=headers, timeout=(10, 20))
                 response.raise_for_status()  # Викличе виняток для HTTP-помилок 4xx/5xx
 
                 # Відправляємо відповідь клієнту

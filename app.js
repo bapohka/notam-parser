@@ -341,7 +341,9 @@ function parseNotams(htmlText) {
     }
 
     const idLine = contentLines[0].trim();
-    if (!/N\d{4,5}\/\d{2} NOTAM[NRC]/.test(idLine)) {
+    // Оновлений регулярний вираз: дозволяє будь-яку велику літеру на початку,
+    // \s* для нуль або більше пробілів перед NOTAM[NRC]
+    if (!/^[A-Z]\d{4,5}\/\d{2}\s*NOTAM[NRC]/.test(idLine)) {
         console.warn("Пропуск блока: не начинается с валидного ID NOTAM:", idLine);
         return; // Невалидный блок NOTAM
     }
