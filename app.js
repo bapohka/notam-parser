@@ -166,8 +166,10 @@ function parseQLineLatLonRadius(geoStr) {
 function clearActiveLayers() {
   activeLayers.forEach(layer => map.removeLayer(layer));
   activeLayers = [];
+}
 // Додаткова функція для форматування дати NOTAM (YYMMDDHHMM)
 // Додаткова функція для форматування дати NOTAM (YYMMDDHHMM[TZ])
+
 function formatNotamDate(dateStrFull) {
     if (!dateStrFull || dateStrFull.length < 10) return dateStrFull; // Повертаємо оригінал, якщо формат невірний
 
@@ -868,9 +870,14 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
             }
         });
         let text = await resp.text();
-        const parsedForIcao = parseNotams(text);    
-        accumulatedParsedNotams.push(...parsedForIcao);
-        console.log(`Завантажено і розпарсено ${parsedForIcao.length} NOTAMів для ${icao}.`);
+        try {
+          const parsedForIcao = parseNotams(text);    
+          accumulatedParsedNotams.push(...parsedForIcao);
+          console.log(`Завантажено і розпарсено ${parsedForIcao.length} NOTAMів для ${icao}.`);
+        } catch (parseError) {
+          console.error(`Помилка парсингу NOTAM для ${icao}:`, parseError);
+          fetchErrors.push({ icao, error: `Помилка парсингу: ${parseError.message}` });
+        }
       } catch (e) {
         console.error(`Не вдалося завантажити NOTAM для ${icao} після всіх спроб:`, e);
         fetchErrors.push({ icao, error: e.message });
