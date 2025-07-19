@@ -1,8 +1,8 @@
 
-// Инициализация карты Leaflet
+// Ініціалізація мапи Leaflet
 let map = L.map('map').setView([45, 42], 6);
 
-// Базовые слои карты
+// Базові слої мапи
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 });
@@ -11,27 +11,59 @@ const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/
   attribution: 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
 
-// Добавляем OSM слой по умолчанию
+// Додаємо OSM шар за замовченням
 osmLayer.addTo(map);
 
-// Объект с базовыми слоями для контроллера
+// Об'єкт з базовими шарами для контролера
 const baseMaps = {
   "OpenStreetMap": osmLayer,
   "Супутник": satelliteLayer
 };
 
-// Хранилище данных NOTAM
-let allNotams = []; // Хранит все распарсенные объекты NOTAM
-let activeLayers = []; // Хранит слои Leaflet, текущие на карте
-let newNotamIds = new Set(); // Хранит ID новых NOTAMов после последней загрузки
+// --- Слой з аеродромами рф та окупованим кримом, які використовуються для атак на Україну ---
+const airbases = [
+    { name: "Belbek (Крым)", coords: [44.6919, 33.5744] },
+    { name: "Saki (Крым)", coords: [45.0930, 33.5950] },
+    { name: "Ashuluk", coords: [47.4227, 47.9266] },
+    { name: "Marinovka", coords: [48.6362, 43.7881] },
+    { name: "Millerovo", coords: [48.9522, 40.3022] },
+    { name: "Morozovsk", coords: [48.3130, 41.7910] },
+    { name: "Olenya", coords: [68.1517, 33.4650] },
+    { name: "Engels-2", coords: [51.0312, 46.1808] },
+    { name: "Shaykovka", coords: [54.2266, 34.3690] },
+    { name: "Mozdok", coords: [43.7875, 44.6031] },
+    { name: "Borisoglebsk", coords: [51.3667, 42.1783] },
+    { name: "Baltimor", coords: [51.6276, 39.1296] },
+    { name: "Savasleyka", coords: [55.4400, 42.3100] },
+    { name: "Akhtubinsk", coords: [48.3086, 46.2042] }
+];
 
+const airbaseIcon = new L.Icon({
+  iconUrl: 'assets/airbase_marker.png',
+  iconSize: [30, 30],      // Приблизний розмір
+  iconAnchor: [15, 30],    // Точка прив'язки (якір) - зазвичай нижній центр іконки
+  popupAnchor: [0, -30]    // Зсув спливаючого вікна, щоб було над іконкою
+});
 
-// Константы
-// Целевой URL для получения NOTAM из FAA для нескольких аэропортов
-const TARGET_ICAOS_STRING = "URRV UUOO UUEE UUDD UUWW URWA UUBP"; // Ростов, Воронеж, Москва (ШРМ, ДМД, ВНК), Астрахань, Брянск
-// URL для запроса через локальный прокси-сервер Python
-// const NOTAM_URL = `http://localhost:8000/proxy?url=${encodeURIComponent(TARGET_FAA_URL)}`; // Больше не используется напрямую
-// Константы для кеширования
+const airbasesLayer = L.layerGroup();
+airbases.forEach(ab => {
+  L.marker(ab.coords, { icon: airbaseIcon })
+    .addTo(airbasesLayer)
+    .bindPopup(`<b>${ab.name}</b><br/>${ab.coords[0].toFixed(4)}, ${ab.coords[1].toFixed(4)}`);
+});
+airbasesLayer.addTo(map); // Додаємо шар на карту за замовчуванням
+
+// Сховище даних NOTAM
+let allNotams = []; // Зберігає всі розпарсені об'єкти NOTAM
+let activeLayers = []; // Зберігає шари Leaflet, які зараз на карті
+let newNotamIds = new Set(); // Зберігає ID нових NOTAM після останнього завантаження
+let hiddenLayers = new Set(); // Зберігає ID NOTAM, шари яких приховані
+
+// Константи
+// Цільовий URL для отримання NOTAM з FAA для кількох аеропортів
+const TARGET_ICAOS_STRING = "UUOO UUEE UUDD UUWW URWA UUBP URRV UKBB UKKK"; // Ростов, Воронеж, Москва (ШРМ, ДМД, ВНК), Астрахань, Брянск
+
+// Константи для кешування
 const CACHE_KEY = 'notamCache';
 const CACHE_STALE_MINUTES = 15;
 
@@ -43,44 +75,39 @@ const icaoAirportNameMap = {
     "UUWW": "Москва (Внуково)",
     "URWA": "Астрахань (Наріманово)",
     "UUBP": "Брянськ",
-    "URRV": "Ростов-на-Дону (Платов)", // Приклад. Волгоград - URWW. Ви можете налаштувати це.
+    "URRV": "Ростов-на-Дону (Платов)", 
+    "URWW": "Волгоград (Гумрак)",
     "UKBB": "Київ (Бориспіль)",
     "UKKK": "Київ (Жуляни)",
+
     // Додайте сюди інші аеропорти за потреби
 };
 
-// Вспомогательная функция для парсинга координат (DDMMSS или DDMM)
+// Додаткова функція для парсингу координат (DDMMSS або DDMM)
 function parseLatLon(str) {
   const cleanStr = str.toUpperCase().replace(/[^0-9NSWE]/g, '');
-  let latDeg, latMin, latSec = 0, lonDeg, lonMin, lonSec = 0;
-  let latDir, lonDir;
 
-  // Попытка распознать DDMMSSN/S DDDMMSS E/W (например, 484200N0453800E)
-  const dmsMatch = cleanStr.match(/^(\d{2})(\d{2})(\d{2})(N|S)(\d{3})(\d{2})(\d{2})(E|W)/);
-  if (dmsMatch) {
-    latDeg = parseInt(dmsMatch[1]);
-    latMin = parseInt(dmsMatch[2]);
-    latSec = parseInt(dmsMatch[3]);
-    latDir = dmsMatch[4];
-    lonDeg = parseInt(dmsMatch[5]);
-    lonMin = parseInt(dmsMatch[6]);
-    lonSec = parseInt(dmsMatch[7]);
-    lonDir = dmsMatch[8];
-  } else {
-    // Попытка распознать DDMMN/S DDDMM E/W (например, 4420N04155E)
-    const dmMatch = cleanStr.match(/^(\d{2})(\d{2})(N|S)(\d{3})(\d{2})(E|W)/);
-    if (dmMatch) {
-      latDeg = parseInt(dmMatch[1]);
-      latMin = parseInt(dmMatch[2]);
-      latDir = dmMatch[3];
-      lonDeg = parseInt(dmMatch[4]);
-      lonMin = parseInt(dmMatch[5]);
-      lonDir = dmMatch[6];
-    } else {
-      console.warn("Не удалось распознать формат координат:", str, "Очищенная строка:", cleanStr);
-      return null;
-    }
+  // Універсальний паттерн для DDMM(SS)N/S DDDMM(SS)E/W
+  // (\d{2})? робить секунди опціональними.
+  // Додано $ в кінці для співпадіння всієї строки.
+  const pattern = /^(\d{2})(\d{2})(\d{2})?(N|S)(\d{3})(\d{2})(\d{2})?(E|W)$/;
+  const match = cleanStr.match(pattern);
+
+  if (!match) {
+    console.warn("Не вдалося розпізнати формат координат:", str, "Очищена строка:", cleanStr);
+    return null;
   }
+
+  // match[3] (latSec) и match[7] (lonSec) будуть undefined, якщо секунд немає.
+  const latDeg = parseInt(match[1], 10);
+  const latMin = parseInt(match[2], 10);
+  const latSec = match[3] ? parseInt(match[3], 10) : 0;
+  const latDir = match[4];
+
+  const lonDeg = parseInt(match[5], 10);
+  const lonMin = parseInt(match[6], 10);
+  const lonSec = match[7] ? parseInt(match[7], 10) : 0;
+  const lonDir = match[8];
 
   let lat = latDeg + latMin / 60 + latSec / 3600;
   if (latDir === 'S') lat = -lat;
@@ -91,7 +118,7 @@ function parseLatLon(str) {
   return { lat, lon };
 }
 
-// Вспомогательная функция для парсинга координат и радиуса из Q-строки (формат DDMMH DDDMMH RRR)
+// Додаткова функція для парсингу координат і радіуса з Q-строки (формат DDMMH DDDMMH RRR)
 function parseQLineLatLonRadius(geoStr) {
     // Паттерн для DDMMH DDDMMH RRR, наприклад, 4645N04411E086
     // DDMM - широта, H - півкуля (N/S)
@@ -135,65 +162,60 @@ function parseQLineLatLonRadius(geoStr) {
     }
 }
 
-// Функция для очистки слоев карты
+// Функція для очистки слоїв карти
 function clearActiveLayers() {
   activeLayers.forEach(layer => map.removeLayer(layer));
   activeLayers = [];
+// Додаткова функція для форматування дати NOTAM (YYMMDDHHMM)
+// Додаткова функція для форматування дати NOTAM (YYMMDDHHMM[TZ])
+function formatNotamDate(dateStrFull) {
+    if (!dateStrFull || dateStrFull.length < 10) return dateStrFull; // Повертаємо оригінал, якщо формат невірний
+
+    // Розділяємо дату і часовий пояс (якщо він є)
+    const dateStr = dateStrFull.substring(0, 10);
+    const timeZone = dateStrFull.substring(10).trim(); // EST або пусто
+
+    const year = parseInt("20" + dateStr.substring(0, 2), 10);
+    const month = parseInt(dateStr.substring(2, 4), 10) - 1; // Місяці в JS Date 0-індексовані
+    const day = parseInt(dateStr.substring(4, 6), 10);
+    const hours = parseInt(dateStr.substring(6, 8), 10);
+    const minutes = parseInt(dateStr.substring(8, 10), 10);
+
+    if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes)) {
+        console.warn("Неверный формат даты NOTAM:", dateStrFull);
+        return dateStrFull;
+    }
+
+    if (timeZone === "EST") {
+        // Для EST просто відображаємо час як є, без конвертації
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        return `${day}.${month + 1}.${year} ${formattedHours}:${formattedMinutes} EST`;
+    } else {
+        // Для інших випадків (або відсутності TZ) конвертуємо в Київ
+        // Створюємо об'єкт Date в UTC
+        const utcDate = new Date(Date.UTC(year, month, day, hours, minutes));
+
+        // Додаємо 3 години для київського часу
+        utcDate.setUTCHours(utcDate.getUTCHours() + 3);
+
+        // Отримуємо компоненти дати та часу для Києва
+        const kyivDay = String(utcDate.getUTCDate()).padStart(2, '0');
+        const kyivMonth = String(utcDate.getUTCMonth() + 1).padStart(2, '0'); // Повертаємо до 1-індексованих місяців
+        const kyivYear = utcDate.getUTCFullYear();
+        const kyivHours = String(utcDate.getUTCHours()).padStart(2, '0');
+        const kyivMinutes = String(utcDate.getUTCMinutes()).padStart(2, '0');
+
+        return `${kyivDay}.${kyivMonth}.${kyivYear} ${kyivHours}:${kyivMinutes} Київ`;
+    }
 }
 
-// Вспомогательная функция для форматирования даты NOTAM (YYMMDDHHMM)
-function formatNotamDate(dateStr) {
-    if (!dateStr || dateStr.length !== 10) return dateStr; // Повертаємо оригінал, якщо формат невірний
-
-    const year = parseInt("20" + dateStr.substring(0, 2));
-    const month = parseInt(dateStr.substring(2, 4)) - 1; // Місяці в JS Date 0-індексовані
-    const day = parseInt(dateStr.substring(4, 6));
-    const hours = parseInt(dateStr.substring(6, 8));
-    const minutes = parseInt(dateStr.substring(8, 10));
-
-    // Створюємо об'єкт Date в UTC
-    const utcDate = new Date(Date.UTC(year, month, day, hours, minutes));
-
-    // Додаємо 3 години для київського часу
-    utcDate.setUTCHours(utcDate.getUTCHours() + 3);
-
-    // Отримуємо компоненти дати та часу для Києва
-    const kyivDay = String(utcDate.getUTCDate()).padStart(2, '0');
-    const kyivMonth = String(utcDate.getUTCMonth() + 1).padStart(2, '0'); // Повертаємо до 1-індексованих місяців
-    const kyivYear = utcDate.getUTCFullYear();
-    const kyivHours = String(utcDate.getUTCHours()).padStart(2, '0');
-    const kyivMinutes = String(utcDate.getUTCMinutes()).padStart(2, '0');
-
-    return `${kyivDay}.${kyivMonth}.${kyivYear} ${kyivHours}:${kyivMinutes} Київ`;
-}
-
-// Вспомогательная функция для конвертации времени HHMM из UTC в HH:MM Киев
-function convertUtcTimeToKyiv(timeStr) {
-    if (!timeStr || timeStr.length !== 4) return timeStr;
-
-    const hours = parseInt(timeStr.substring(0, 2));
-    const minutes = parseInt(timeStr.substring(2, 4));
-
-    if (isNaN(hours) || isNaN(minutes)) return timeStr;
-
-    // Створюємо тимчасовий об'єкт Date (дата не має значення, тільки час)
-    // Використовуємо довільну дату, щоб уникнути проблем з переходом через північ
-    const tempDate = new Date(Date.UTC(2000, 0, 1, hours, minutes));
-
-    // Додаємо 3 години для київського часу
-    tempDate.setUTCHours(tempDate.getUTCHours() + 3);
-
-    const kyivHours = String(tempDate.getUTCHours()).padStart(2, '0');
-    const kyivMinutes = String(tempDate.getUTCMinutes()).padStart(2, '0');
-
-    return `${kyivHours}:${kyivMinutes}`;
-}
-// Вспомогательная функция для получения описания типа NOTAM по Q-коду
+// Додаткова функція для отримання опису типу NOTAM по Q-коду
 function getNotamTypeDescription(qCodeFull) {
     if (!qCodeFull) return "Не вказано";
-    const qCodePrefix = qCodeFull.split('/')[1]?.substring(0,5); // Берем первые 5 символов после первого /
+    const qCodePrefix = qCodeFull.split('/')[1]?.substring(0,5); // Беремо перші 5 символів після першого /
 
-    // Расшифровка основных Q-кодов (можно дополнять)
+    // Розшифровка основних Q-кодів (можна доповнювати)
     const qCodeMap = {
         'QRTCA': "Тимчасово обмежена зона",
         'QRACA': "Зона обмежень",
@@ -208,13 +230,15 @@ function getNotamTypeDescription(qCodeFull) {
         'QNVAS': "Навігаційний засіб не працює",
         'QNMXX': "Інформація по навігаційним засобам",
         'QARLC': "Ділянку повітряної траси закрито",
-        // ... другие типы
+        'QARXX': "Інформація по повітряній трасі",
+        'QWAXX': "Інформація по погоді",
+        // ... інші типи
     };
-    // Ищем по первым 5 символам, затем по первым 3, если не найдено
+    // Шукаємо по першим 5 символам, потім по першим 3, якщо не знайдено
     return qCodeMap[qCodePrefix] || qCodeMap[qCodePrefix?.substring(0,3) + 'XX'] || "Спеціальне повідомлення";
 }
 
-// Вспомогательная функция для описания высот
+// Додаткова функція для опису висот
 function getAltitudeDescription(altStr) {
     if (!altStr) return "не вказано";
     if (altStr.toUpperCase() === 'SFC') return "від поверхні землі";
@@ -235,7 +259,7 @@ function getAltitudeDescription(altStr) {
     return altStr; // Якщо не вдалося розпізнати
 }
 
-// Вспомогательная функция для форматирования расписания (поля D)
+// Допоміжна функція для форматування розкладу (поля D)
 function formatNotamSchedule(notamObj) {
     const scheduleStr = notamObj.D;
     if (!scheduleStr) return "Не вказано";
@@ -247,7 +271,7 @@ function formatNotamSchedule(notamObj) {
         return "Постійно";
     }
 
-    // Пример парсинга для форматов типа "DAILY 1100-1400" или "06-11 0600-1500"
+    // Приклад парсингу для форматів типа "DAILY 1100-1400" або "06-11 0600-1500"
     const scheduleMatch = upperSchedule.match(/^(\w+)\s+(\d{4})-(\d{4})$/);
     if (scheduleMatch) {
         const period = scheduleMatch[1]; // DAILY, MON-FRI, 06-11, etc.
@@ -257,17 +281,17 @@ function formatNotamSchedule(notamObj) {
         const kyivTimeFrom = convertUtcTimeToKyiv(timeFrom);
         const kyivTimeTo = convertUtcTimeToKyiv(timeTo);
 
-        // Простой перевод для DAILY, можно добавить другие
+        // Простий перевод для DAILY, можна додати інші
         const translatedPeriod = period === 'DAILY' ? 'Щодня' : period;
 
         const prefix = isUnlimitedHeight ? "Ризик " : "";
         return `${prefix}${translatedPeriod} з ${kyivTimeFrom} по ${kyivTimeTo}`;
     }
 
-    return scheduleStr; // Возвращаем как есть, если формат не распознан
+    return scheduleStr; // Повертаємо як є, якщо формат не розпізнано
 }
 
-// Функция для форматирования текста NOTAM для всплывающего окна
+// Функція для форматування тексту NOTAM для спливаючого вікна
 function notamToText(obj) {
   let text = `<b>${obj.id}</b><br>`;
   if (obj.Q) text += `Q) ${obj.Q}<br>`;
@@ -275,11 +299,11 @@ function notamToText(obj) {
   if (obj.B) text += `B) ${obj.B}<br>`;
   if (obj.C) text += `C) ${obj.C}<br>`;
   if (obj.D) text += `D) ${obj.D}<br>`;
-  if (obj.E) text += `E) ${obj.E.replace(/\n/g, '<br>')}<br>`; // Сохраняем переносы строк в поле E
+  if (obj.E) text += `E) ${obj.E.replace(/\n/g, '<br>')}<br>`; // Зберігаємо переноси строк в поле E
   if (obj.F) text += `F) ${obj.F}<br>`;
   if (obj.G) text += `G) ${obj.G}<br>`;
 
-  // Добавляем человекочитаемое описание
+  // Додаємо людиночитабельний опис
   let humanReadable = "<hr><b>Людський опис:</b><br>";
   if (obj.A) {
       const airportIdentifier = obj.A.trim();
@@ -304,7 +328,10 @@ function notamToText(obj) {
       humanReadable += `<b>Нижня межа:</b> ${getAltitudeDescription(obj.F)}<br>`;
   }
 
-  return text + humanReadable;
+  // Додаємо кнопку для приховування шару
+  const buttonHtml = `<div style="margin-top: 10px;"><button class="btn btn--sm btn--outline" onclick="hideLayer('${obj.id}')">Сховати цей шар</button></div>`;
+
+  return `<div class="leaflet-popup-content-inner">${text}${humanReadable}${buttonHtml}</div>`;
 }
 
 // Вспомогательная функция для извлечения содержимого поля до следующего маркера на той же строке
@@ -427,18 +454,28 @@ function parseNotams(htmlText) {
 
     // (существующая логика парсинга геометрии остается здесь без изменений)
     if (obj.E) {
-      // Поиск полигона (AREA)
-      const areaPattern = /(?:(?:WI\s+AREA|AREA):)\s*([0-9NSWE\s\n-]+(?:[.,]))/i;
-      let areaMatch = obj.E.match(areaPattern);
-      if (areaMatch && areaMatch[1]) {
-        let coordString = areaMatch[1].replace(/[.,]$/, ''); // Удаляем точку/запятую в конце
-        coordString = coordString.replace(/\s+/g, ''); // Удаляем все пробельные символы
-        let coordParts = coordString.split('-').filter(c => c.length > 0 && /[NS]/.test(c) && /[EW]/.test(c));
+      // --- Улучшенный парсинг полигонов ---
+      // Ищем последовательность из 3+ координат, разделенных дефисами.
+      // Это более надежный способ найти полигон, чем поиск по ключевым словам.
 
+      // Подготовим строку E: уберем все переносы строк, чтобы regex мог найти
+      // всю последовательность координат, даже если она разбита на несколько строк.
+      const preparedE = obj.E.replace(/\n/g, '');
+
+      const polygonPattern = /(\d{4,6}[NS]\d{5,7}[EW](?:-\d{4,6}[NS]\d{5,7}[EW]){2,})/;
+      const polygonMatch = preparedE.match(polygonPattern);
+
+      if (polygonMatch && polygonMatch[0]) {
+        let coordString = polygonMatch[0];
+        // Убираем возможную точку в конце, которая не является частью координат
+        coordString = coordString.replace(/[.,]$/, '');
+        
+        const coordParts = coordString.split('-').filter(c => c.length > 0);
+        
         if (coordParts.length >= 3) {
-          obj.areaPolygon = coordParts.map(part => parseLatLon(part)).filter(p => p !== null);
-          if (obj.areaPolygon.length < 3 || obj.areaPolygon.some(coord => coord === null)) {
-            delete obj.areaPolygon; // Невалидный полигон
+          const parsedCoords = coordParts.map(part => parseLatLon(part)).filter(p => p !== null);
+          if (parsedCoords.length >= 3) {
+            obj.areaPolygon = parsedCoords;
           }
         }
       }
@@ -489,6 +526,18 @@ function parseNotams(htmlText) {
         }
       }
     }
+    // Определяем, является ли NOTAM архивным
+    if (obj.C) {
+        const endDate = parseNotamDateToUTC(obj.C);
+        if (endDate) {
+            const now = new Date();
+            obj.archive = endDate < now;
+        } else {
+            obj.archive = false; // Если дату окончания не удалось распарсить, считаем не архивным
+        }
+    } else {
+        obj.archive = false; // Если нет даты окончания, считаем не архивным
+    }
 
     // Определяем тип NOTAM на основе поля Q (для фильтров)
     // obj.notamType уже инициализирован 'restricted'
@@ -506,7 +555,8 @@ function parseNotams(htmlText) {
     // Добавляем объект NOTAM в список, если найдена какая-либо геометрия
     if (obj.areaPolygon || obj.circle || obj.point) {
         // DEBUG: Логируем объект, который будет добавлен в parsedNotams
-        // console.log(`[DEBUG] Pushing to parsedNotams ${obj.id}:`, JSON.parse(JSON.stringify(obj))); // Раскомментируйте для отладки
+        console.log(`[DEBUG] Pushing to parsedNotams ${obj.id}:`, JSON.parse(JSON.stringify(obj))); // Раскомментируйте для отладки
+        
         parsedNotams.push(obj);
     }
   }); // Конец forEach для doc.querySelectorAll('pre')
@@ -544,7 +594,7 @@ function updateMap(notamsToDisplay) {
         if (layer) {
             layer.notamId = obj.id; // Сохраняем ID для легкого поиска
             layer.addTo(map).bindPopup(notamToText(obj));
-            activeLayers.push(layer); // Добавляем слой в список активных
+            activeLayers.push(layer); // Добавляем слой в список активных\
         }
     });
 }
@@ -564,6 +614,8 @@ function updateNotamList(notamsToDisplay) {
         if (notam.notamType) {
             notamItem.classList.add(`notam-item--${notam.notamType}`);
         }
+        // Добавляем data-атрибут для легкого поиска
+        notamItem.dataset.notamId = notam.id;
 
         notamItem.innerHTML = `
             <div class="notam-id">${notam.id}</div>
@@ -571,22 +623,55 @@ function updateNotamList(notamsToDisplay) {
         `;
         // Добавляем слушатель клика для центрирования карты на NOTAM
         notamItem.addEventListener('click', () => {
-            const layer = activeLayers.find(l => l.notamId === notam.id);
+            let layer = activeLayers.find(l => l.notamId === notam.id);
 
             if (layer) {
-                 // Центрируем карту в зависимости от типа слоя
-                 if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
+                // Если слой скрыт, сначала показываем его
+                if (hiddenLayers.has(notam.id)) {
+                    layer = showLayer(notam.id); // showLayer вернет нам слой
+                }
+                // Центрируем карту в зависимости от типа слоя
+                if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
                     map.setView(layer.getLatLng(), 10); // Приближаемся к точке
-                 } else if (layer instanceof L.Circle || layer instanceof L.Polygon) {
+                } else if (layer instanceof L.Circle || layer instanceof L.Polygon) {
                     map.fitBounds(layer.getBounds()); // Подгоняем границы для круга/полигона
-                 }
-                 layer.openPopup(); // Открываем всплывающее окно
+                }
+                layer.openPopup(); // Открываем всплывающее окно
             }
         });
         notamListElement.appendChild(notamItem);
     });
 }
 
+// Функция для скрытия слоя
+function hideLayer(notamId) {
+    const layer = activeLayers.find(l => l.notamId === notamId);
+    if (!layer || !map.hasLayer(layer)) return;
+
+    layer.closePopup(); // Закрываем popup перед скрытием
+    map.removeLayer(layer);
+    hiddenLayers.add(notamId);
+
+    // Обновляем стиль элемента списка, чтобы визуально показать, что он скрыт
+    const listItem = document.querySelector(`.notam-item[data-notam-id="${notamId}"]`);
+    if (listItem) {
+        listItem.classList.add('hidden-layer');
+    }
+}
+
+// Функция для показа слоя
+function showLayer(notamId) {
+    const layer = activeLayers.find(l => l.notamId === notamId);
+    if (!layer || map.hasLayer(layer)) return layer; // Если слоя нет или он уже на карте, выходим
+
+    map.addLayer(layer);
+    hiddenLayers.delete(notamId);
+
+    const listItem = document.querySelector(`.notam-item[data-notam-id="${notamId}"]`);
+    listItem?.classList.remove('hidden-layer');
+
+    return layer; // Возвращаем слой для дальнейших действий (например, центрирования)
+}
 // Функция для применения фильтров и обновления карты/списка
 function applyFilters() {
         // Получаем состояние фильтра "Новые"
@@ -631,6 +716,62 @@ function populateAirportFilter() {
     });
 }
 
+// Нова допоміжна функція для повторних запитів з таймаутом
+async function fetchWithRetry(url, options = {}) {
+    const { retries = 3, delay = 3000, onRetry } = options;
+    let lastError;
+
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) return response; // Успіх
+
+            // Помилки, при яких варто повторити спробу (тимчасові проблеми на сервері)
+            if ([502, 503, 504].includes(response.status)) {
+                throw new Error(`Помилка сервера: ${response.status}`);
+            }
+
+            // Інші помилки (напр. 404), при яких повторювати не треба
+            lastError = new Error(`HTTP помилка! Статус: ${response.status}`);
+            break; // Виходимо з циклу, щоб не повторювати
+        } catch (error) {
+            // Ловить помилки мережі (timeout) та помилки сервера (50x), які ми кинули вище
+            lastError = error;
+            if (onRetry) {
+                onRetry(error, i + 1);
+            }
+        }
+
+        // Чекаємо перед наступною спробою, якщо це не остання
+        if (i < retries - 1) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+    // Якщо цикл завершився, значить всі спроби були невдалі
+    throw lastError;
+}
+// Вспомогательная функция для парсинга даты NOTAM в UTC Date
+function parseNotamDateToUTC(dateStr) {
+    if (!dateStr || dateStr.length !== 10) return null;
+
+    const year = parseInt("20" + dateStr.substring(0, 2));
+    const month = parseInt(dateStr.substring(2, 4)) - 1; // Месяцы в JS Date 0-индексированы
+    const day = parseInt(dateStr.substring(4, 6));
+    const hours = parseInt(dateStr.substring(6, 8));
+    const minutes = parseInt(dateStr.substring(8, 10));
+
+    if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes)) {
+        console.warn("Неверный формат даты NOTAM:", dateStr);
+        return null;
+    }
+
+    try {
+        return new Date(Date.UTC(year, month, day, hours, minutes));
+    } catch (e) {
+        console.error("Ошибка создания объекта Date:", e);
+        return null;
+    }
+}
 // Функция для отправки распарсенных NOTAMов на сервер для сохранения
 async function saveNotamsToServer(notamsToSave) {
   if (!notamsToSave || notamsToSave.length === 0) {
@@ -660,8 +801,13 @@ async function saveNotamsToServer(notamsToSave) {
 }
 
 // Функция для загрузки NOTAMов с источника
-async function loadNotam(forceRefresh = false) {
-  console.log('Попытка загрузки NOTAM...');
+async function loadNotam(forceRefresh = false, specificIcao = null) {
+  if (specificIcao) {
+    console.log(`Попытка загрузки NOTAM для ${specificIcao}...`);
+  } else {
+    console.log('Попытка загрузки NOTAM для всех аэропортов...');
+  }
+
   let cachedNotamsData = null;
 
   if (!forceRefresh) {
@@ -701,7 +847,7 @@ async function loadNotam(forceRefresh = false) {
   }
 
   // Если дошли сюда, значит, нужно загружать с сервера для каждого ICAO
-  const icaoList = TARGET_ICAOS_STRING.split(' ');
+  const icaoList = specificIcao ? [specificIcao] : TARGET_ICAOS_STRING.split(' ');
   let accumulatedParsedNotams = [];
   let fetchErrors = [];
 
@@ -717,16 +863,19 @@ async function loadNotam(forceRefresh = false) {
       console.log(`Загрузка NOTAM для ${icao} через ${singleIcaoProxyUrl}`);
 
       try {
-        let resp = await fetch(singleIcaoProxyUrl);
-        if (!resp.ok) {
-          throw new Error(`HTTP error! status: ${resp.status} for ${icao}`);
-        }
+        let resp = await fetchWithRetry(singleIcaoProxyUrl, {
+            retries: 3,
+            delay: 2000, // 2 секунди затримки між спробами
+            onRetry: (error, attempt) => {
+                console.warn(`Спроба ${attempt} для ${icao} не вдалася: ${error.message}. Повтор...`);
+            }
+        });
         let text = await resp.text();
-        const parsedForIcao = parseNotams(text);
+        const parsedForIcao = parseNotams(text);    
         accumulatedParsedNotams.push(...parsedForIcao);
         console.log(`Загружено и распарсено ${parsedForIcao.length} NOTAMов для ${icao}.`);
       } catch (e) {
-        console.error(`Ошибка загрузки NOTAM для ${icao}:`, e);
+        console.error(`Не вдалося завантажити NOTAM для ${icao} після всіх спроб:`, e);
         fetchErrors.push({ icao, error: e.message });
       }
     }
@@ -740,41 +889,62 @@ async function loadNotam(forceRefresh = false) {
       }
     }
 
-    // Дедупликация NOTAMов по ID, так как один NOTAM может быть получен для разных аэропортов
+    // --- Дедупликация и ОБЪЕДИНЕНИЕ NOTAMов ---
+    // 1. Начинаем с карты, заполненной NOTAMами из кеша (активными и архивными)
     const uniqueNotamMap = new Map();
+    if (cachedNotamsData) {
+        const cachedAll = [
+            ...(cachedNotamsData.notams || []),
+            ...(cachedNotamsData.archivedNotams || [])
+        ];
+        cachedAll.forEach(notam => {
+            uniqueNotamMap.set(notam.id, notam);
+        });
+    }
+
+    // 2. Добавляем/обновляем NOTAMы, полученные с сервера.
+    // Если NOTAM с таким ID уже есть, он будет заменен свежей версией.
     accumulatedParsedNotams.forEach(notam => {
-      if (!uniqueNotamMap.has(notam.id)) {
         uniqueNotamMap.set(notam.id, notam);
-      }
     });
-    allNotams = Array.from(uniqueNotamMap.values());
+    
+    let fullMergedNotams = Array.from(uniqueNotamMap.values());
 
-    // Отправляем свежераспарсенные NOTAMы на сервер для сохранения в notams_data.json
-    await saveNotamsToServer(allNotams);
+    // 3. Пересчитываем статус 'archive' для всех NOTAMов в объединенном списке
+    fullMergedNotams.forEach(notam => {
+        if (notam.C) {
+            const endDate = parseNotamDateToUTC(notam.C);
+            if (endDate) { notam.archive = endDate < new Date(); }
+        }
+    });
 
+    // Отправляем ПОЛНЫЙ объединенный список на сервер для сохранения
+    await saveNotamsToServer(fullMergedNotams);
+
+    // Определяем новые NOTAMы для подсветки
     newNotamIds.clear();
-    allNotams.forEach(notam => {
-      if (!previouslyKnownNotamIds.has(notam.id)) {
-        newNotamIds.add(notam.id);
-      }
+    fullMergedNotams.forEach(notam => {
+      if (!previouslyKnownNotamIds.has(notam.id)) { newNotamIds.add(notam.id); }
     });
-    console.log(`Всего загружено и распарсено ${allNotams.length} уникальных NOTAMов. Новых: ${newNotamIds.size}`);
 
-    // Сохраняем свежезагруженные и обработанные NOTAMы в кеш
+    // Фильтруем ТОЛЬКО АКТИВНЫЕ для отображения и дальнейшей работы
+    allNotams = fullMergedNotams.filter(n => !n.archive);
+    console.log(`Обработано ${fullMergedNotams.length} уникальных NOTAMов. Активных для отображения: ${allNotams.length}. Новых: ${newNotamIds.size}`);
+
+    // Сохраняем в кеш, разделяя на активные и архивные
     try {
       const newCacheEntry = {
         lastUpdated: new Date().toISOString(),
-        notams: allNotams // Сохраняем объединенный и дедуплицированный список
+          notams: allNotams, // Уже отфильтрованные активные
+          archivedNotams: fullMergedNotams.filter(n => n.archive)
       };
       localStorage.setItem(CACHE_KEY, JSON.stringify(newCacheEntry));
-      console.log("Объединенные NOTAMы сохранены в кеш.");
+      console.log(`Сохранено в кеш: актуальных - ${newCacheEntry.notams.length}, архивных - ${newCacheEntry.archivedNotams.length}`);
     } catch (e) {
       console.error("Ошибка сохранения в кеш:", e);
-      if (e.name === 'QuotaExceededError') {
-        alert('Не удалось сохранить NOTAMы в локальное хранилище: превышена квота.');
-      }
+      alert('Не удалось сохранить NOTAMы в локальное хранилище: превышена квота.');
     }
-    applyFilters(); // Применяем начальные фильтры и отображаем на карте/в списке
+    applyFilters(); // Применяем фильтры к списку АКТИВНЫХ NOTAMов
 
   } catch (e) {
     console.error('Ошибка загрузки или парсинга NOTAM с сервера:', e);
@@ -806,8 +976,14 @@ document.getElementById('airport-filter')?.addEventListener('change', applyFilte
 
 // Добавляем слушатель для кнопки "Обновить NOTAM"
 document.getElementById('refresh-notams-button')?.addEventListener('click', () => {
-    console.log("Запрос на обновление NOTAM вручную...");
-    loadNotam(true); // Вызываем функцию загрузки с флагом принудительного обновления
+    const selectedAirport = document.getElementById('airport-filter')?.value || "all";
+    if (selectedAirport === "all") {
+        console.log("Запрос на обновление NOTAM вручную для всех аэропортов...");
+        loadNotam(true); // Вызываем функцию загрузки с флагом принудительного обновления для всех
+    } else {
+        console.log(`Запрос на обновление NOTAM вручную для ${selectedAirport}...`);
+        loadNotam(true, selectedAirport); // Вызываем с указанием конкретного ICAO
+    }
 });
 // Запускаем загрузку NOTAMов после полной загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
@@ -816,7 +992,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Добавляем контроллер слоев на карту
-L.control.layers(baseMaps).addTo(map);
+const overlayMaps = {
+    "Аеродроми РФ": airbasesLayer
+};
+
+// Добавляем контроллер слоев на карту
+L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 // Добавляем линейку масштаба на карту (метрическая система, без имперской)
 L.control.scale({ metric: true, imperial: false }).addTo(map);

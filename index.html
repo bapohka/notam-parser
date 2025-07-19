@@ -17,7 +17,7 @@
         </header>
         
         <div class="main-content">
-            <!-- Левая боковая панель -->
+            <!-- Ліва бокова панель -->
             <div class="sidebar">
                 <div class="sidebar-section">
                     <h3>Керування NOTAM</h3>
@@ -34,9 +34,9 @@
                     </div>
                     <div>
                         <input type="checkbox" id="filter-unlimited-height" class="filter-checkbox">
-                        <label for="filter-unlimited-height">Без обмеження по висоті (UNL)</label> <!-- Already in Ukrainian -->
+                        <label for="filter-unlimited-height">Без обмеження по висоті (UNL)</label> 
                     </div>
-                    <!-- Фильтры по типам -->
+                    <!-- Фільтри за типами -->
                     <div class="filter-group">
                         <h4>Типи NOTAM</h4>
                         <div class="checkbox-group">
@@ -61,20 +61,24 @@
                 </div>
 
  
-                <!-- Список активных NOTAM -->
+                <!-- Список активних NOTAM -->
                 <div class="sidebar-section">
                     <h4>Активні NOTAM</h4>
                     <div id="notam-list" class="notam-list">
-                        <!-- Список будет заполнен динамически -->
+                        <!-- Список буде заповнено динамічно -->
                     </div>
                 </div>
             </div>
 
-            <!-- Основная область с картой -->
+            <!-- Основна область з картою -->
             <div class="map-container">
                 <div id="map" class="map"></div>
                 <div class="map-legend">
                     <h4>Легенда</h4>
+                    <div class="legend-item">
+                        <img src="assets/airbase_marker.png" class="legend-icon" alt="Іконка аеродрому">
+                        <span>Аеродром рф</span>
+                    </div>
                     <div class="legend-item">
                         <div class="legend-marker danger"></div>
                         <span>Небезпечні зони</span>

@@ -10,8 +10,11 @@
 
 
 ## Запуск
-
+*   Мати python
 *   Встановити `pip install requests`
 *   Запустити `python proxy_server.py`
 *   Відкрити у браузері сторінку `http://localhost:8000`
 
+## Приклад роботи
+
+![Приклад роботи](assets/example.png)
