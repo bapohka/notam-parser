@@ -319,7 +319,7 @@ function notamToText(obj) {
   } else if (obj.B) {
       humanReadable += `<b>Початок дії:</b> ${formatNotamDate(obj.B).replace(' Київ', '')} за Київським часом<br>`;
   }
-  if (obj.D && obj.D.toUpperCase() !== 'PERM') { // PERM - постоянно, не выводим как расписание
+  if (obj.D && obj.D.toUpperCase() !== 'PERM') { // PERM - постійно, не виводимо як розклад
       humanReadable += `<b>Розклад:</b> ${formatNotamSchedule(obj)}<br>`;
     }
   if (obj.F && obj.G) {
@@ -334,8 +334,8 @@ function notamToText(obj) {
   return `<div class="leaflet-popup-content-inner">${text}${humanReadable}${buttonHtml}</div>`;
 }
 
-// Вспомогательная функция для извлечения содержимого поля до следующего маркера на той же строке
-// Может быть определена вне parseNotams или в её начале.
+// Допоміжна функція для витягування вмісту поля до наступного маркера на тій же стрічці
+// Може бути визначена поза parseNotams або на її початку.
 function _extractContentUntilNextMarker(lineContent, currentFieldPrefix, nextPossibleFieldPrefixes) {
     let content = lineContent.slice(currentFieldPrefix.length);
     let endIndex = content.length;
@@ -350,7 +350,7 @@ function _extractContentUntilNextMarker(lineContent, currentFieldPrefix, nextPos
     return { extracted, remaining };
 }
 
-// Функция для парсинга "сырого" HTML-текста NOTAM
+// Функція для парсингу "сирого" HTML-текста NOTAM
 function parseNotams(htmlText) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlText, 'text/html');
@@ -359,12 +359,12 @@ function parseNotams(htmlText) {
   doc.querySelectorAll('pre').forEach(preElement => {
     const notamTextContent = preElement.textContent;
     if (!notamTextContent || notamTextContent.trim() === '') {
-      return; // Пропускаем пустые <pre> теги
+      return; // Пропускаємо пусті <pre> теги
     }
 
     const contentLines = notamTextContent.trim().split('\n');
     if (contentLines.length === 0) {
-      return; // Пропускаем, если нет содержимого после trim
+      return; // Пропускаємо, якщо немає вмісту після trim
     }
 
     const idLine = contentLines[0].trim();
@@ -372,35 +372,35 @@ function parseNotams(htmlText) {
     // \s* для нуль або більше пробілів перед NOTAM[NRC]
     if (!/^[A-Z]\d{4,5}\/\d{2}\s*NOTAM[NRC]/.test(idLine)) {
         console.warn("Пропуск блока: не начинается с валидного ID NOTAM:", idLine);
-        return; // Невалидный блок NOTAM
+        return; // Невалидний блок NOTAM
     }
     const id = idLine;
     
     let bodyLines = contentLines.slice(1).map(l => l.trim()).filter(l => l.length > 0);
     let obj = { id: id, notamType: 'restricted' };
-    let inFieldE = false; // Флаг для отслеживания парсинга многострочного поля E
-    
-    bodyLines.forEach(line => { // Используем bodyLines
-        let lineToParse = line; // Строки уже очищены и отфильтрованы
+    let inFieldE = false; // Флаг для відслідковування парсинга многострочного поля E
+
+    bodyLines.forEach(line => { // Використовуємо bodyLines
+        let lineToParse = line; // Строки вже очищені і відфільтровані
 
         if (inFieldE) {
-            // Если мы в поле E, проверяем, не начинается ли текущая строка с маркера,
-            // который завершает поле E (F, G, CREATED, SOURCE или даже новое A, B, C, D для надежности).
+            // Якщо ми в полі E, перевіряємо, чи не починається поточний рядок з маркера,
+            // який завершує поле E (F, G, CREATED, SOURCE або навіть нове A, B, C, D для надійності).
             if (lineToParse.startsWith('F)') || lineToParse.startsWith('G)') ||
                 lineToParse.startsWith('A)') || lineToParse.startsWith('B)') ||
                 lineToParse.startsWith('C)') || lineToParse.startsWith('D)') ||
                 lineToParse.startsWith('CREATED:') || lineToParse.startsWith('SOURCE:')) {
-                inFieldE = false; // Завершаем сбор поля E; эта строка будет обработана ниже.
+                inFieldE = false; // Завершуємо збір поля E; цей рядок буде оброблений нижче.
             } else {
-                // Если не нашли терминирующий маркер, это продолжение поля E.
-                if (obj.E === undefined) obj.E = ""; // Инициализируем, если E еще не было
-                else if (obj.E !== "") obj.E += '\n'; // Добавляем перенос строки, если E уже имеет текст
+                // Якщо не знайшли термінуючий маркер, це продовження поля E.
+                if (obj.E === undefined) obj.E = ""; // Ініціалізуємо, якщо E ще не було
+                else if (obj.E !== "") obj.E += '\n'; // Додаємо перенос рядка, якщо E вже має текст
                 obj.E += lineToParse;
-                return; // Переходим к следующей строке из `lines`
+                return; // Переходимо до наступного рядка з `lines`
             }
         }
 
-        // Последовательно извлекаем поля из lineToParse
+        // Послідовно витягуємо поля з lineToParse
         // Q)
         if (lineToParse.startsWith('Q)')) {
             const { extracted, remaining } = _extractContentUntilNextMarker(lineToParse, 'Q)', ['A)', 'B)', 'C)', 'D)', 'E)', 'F)', 'G)']);
@@ -428,10 +428,10 @@ function parseNotams(htmlText) {
         }
         // E)
         if (lineToParse.startsWith('E)')) {
-            // Поле E забирает остаток строки на этой линии и активирует режим inFieldE
+            // Поле E забирає залишок рядка на цій лінії і активує режим inFieldE
             obj.E = lineToParse.slice(2).trim();
             inFieldE = true;
-            return; // Переходим к следующей строке из `bodyLines`, т.к. E может быть многострочным
+            return; // Переходимо до наступного рядка з `bodyLines`, т.к. E може бути многострочним
         }
         // F)
         if (lineToParse.startsWith('F)')) {
@@ -440,26 +440,23 @@ function parseNotams(htmlText) {
         }
         // G)
         if (lineToParse.startsWith('G)')) {
-            // Поле G забирает остаток строки
+            // Поле G забирає залишок рядка
             obj.G = lineToParse.slice(2).trim();
-            // lineToParse = ""; // G "съело" остаток, если нужно
+            // lineToParse = ""; // G "з'їло" залишок, якщо потрібно
         } else {
-            // Если после всех проверок в lineToParse что-то осталось, и это не часть E,
-            // оно будет проигнорировано, как и раньше ("Другие строки...").
+            // Якщо після всіх перевірок в lineToParse щось залишилося, і це не частина E,
+            // воно буде проігноровано, як і раніше ("Інші рядки...").
         }
     });
 
-    // DEBUG: Логируем объект перед добавлением геометрии, чтобы увидеть все текстовые поля
-    // console.log(`[DEBUG] Parsed fields for ${obj.id}:`, JSON.parse(JSON.stringify(obj))); // Раскомментируйте для отладки
 
-    // (существующая логика парсинга геометрии остается здесь без изменений)
+    // (існуюча логіка парсингу геометрії залишається тут без змін)
     if (obj.E) {
-      // --- Улучшенный парсинг полигонов ---
-      // Ищем последовательность из 3+ координат, разделенных дефисами.
-      // Это более надежный способ найти полигон, чем поиск по ключевым словам.
+      // --- Парсинг полігонів ---
+      // Шукаємо послідовність з 3+ координат, розділених дефісами.
 
-      // Подготовим строку E: уберем все переносы строк, чтобы regex мог найти
-      // всю последовательность координат, даже если она разбита на несколько строк.
+      // Підготуємо рядок E: видалимо всі переноси рядків, щоб regex міг знайти
+      // всю послідовність координат, навіть якщо вона розбита на кілька рядків.
       const preparedE = obj.E.replace(/\n/g, '');
 
       const polygonPattern = /(\d{4,6}[NS]\d{5,7}[EW](?:-\d{4,6}[NS]\d{5,7}[EW]){2,})/;
@@ -467,7 +464,7 @@ function parseNotams(htmlText) {
 
       if (polygonMatch && polygonMatch[0]) {
         let coordString = polygonMatch[0];
-        // Убираем возможную точку в конце, которая не является частью координат
+        // Прибираємо можливу точку в кінці, яка не є частиною координат
         coordString = coordString.replace(/[.,]$/, '');
         
         const coordParts = coordString.split('-').filter(c => c.length > 0);
@@ -480,17 +477,17 @@ function parseNotams(htmlText) {
         }
       }
 
-      // Поиск круга (CIRCLE) в поле E, если полигон не найден
+      // Пошук круга (CIRCLE) в полі E, якщо полігон не знайдено
       if (!obj.areaPolygon) {
         const circleEMatch = obj.E.match(/WI\s+CIRCLE\s+RADIUS\s+([\d.]+)(KM|NM)\s+CENTRE\s*(\d{4,8}[NS]\d{5,9}[EW])/i);
         if (circleEMatch) {
           const radiusVal = parseFloat(circleEMatch[1]);
           const radiusUnit = circleEMatch[2].toUpperCase();
           const centerCoord = parseLatLon(circleEMatch[3]);
-          if (centerCoord && centerCoord.lat != null && !isNaN(radiusVal)) { // Проверяем, что parseLatLon вернул валидный объект
+          if (centerCoord && centerCoord.lat != null && !isNaN(radiusVal)) { // Перевіряємо, що parseLatLon повернув валідний об'єкт
             obj.circle = {
               center: centerCoord,
-              radius: radiusUnit === 'KM' ? radiusVal * 1000 : radiusVal * 1852 // радиус в метрах
+              radius: radiusUnit === 'KM' ? radiusVal * 1000 : radiusVal * 1852 // радіус в метрах
             };
           }
         }
@@ -526,21 +523,21 @@ function parseNotams(htmlText) {
         }
       }
     }
-    // Определяем, является ли NOTAM архивным
+    // Перевірка, чи є NOTAM архівним
     if (obj.C) {
         const endDate = parseNotamDateToUTC(obj.C);
         if (endDate) {
             const now = new Date();
             obj.archive = endDate < now;
         } else {
-            obj.archive = false; // Если дату окончания не удалось распарсить, считаем не архивным
+            obj.archive = false; // Якщо дату закінчення не вдалося розпарсити, вважаємо не архівним
         }
     } else {
-        obj.archive = false; // Если нет даты окончания, считаем не архивным
+        obj.archive = false; // Якщо немає дати закінчення, вважаємо не архівним
     }
 
-    // Определяем тип NOTAM на основе поля Q (для фильтров)
-    // obj.notamType уже инициализирован 'restricted'
+    // Визначаємо тип NOTAM на основі поля Q (для фільтрів)
+    // obj.notamType вже ініціалізований 'restricted'
     if (obj.Q && obj.Q.includes('/')) {
         const qParts = obj.Q.split('/');
         if (qParts.length > 1) {
@@ -548,39 +545,39 @@ function parseNotams(htmlText) {
             if (qCode.startsWith('QRTCA')) obj.notamType = 'danger'; // Restricted Area
             else if (qCode.startsWith('QFA')) obj.notamType = 'airport'; // Aerodrome
             else if (qCode.startsWith('QNA')) obj.notamType = 'navigation'; // Navigation Warning
-            // Другие типы могут быть добавлены здесь, иначе останется 'restricted'
+            // Інші типи можуть бути додані тут, інакше залишиться 'restricted'
         }
     }
 
-    // Добавляем объект NOTAM в список, если найдена какая-либо геометрия
+    // Додаємо об'єкт NOTAM у список, якщо знайдена якась геометрія
     if (obj.areaPolygon || obj.circle || obj.point) {
-        // DEBUG: Логируем объект, который будет добавлен в parsedNotams
-        console.log(`[DEBUG] Pushing to parsedNotams ${obj.id}:`, JSON.parse(JSON.stringify(obj))); // Раскомментируйте для отладки
+        // DEBUG: Логуємо об'єкт, який буде доданий в parsedNotams
+        // console.log(`[DEBUG] Pushing to parsedNotams ${obj.id}:`, JSON.parse(JSON.stringify(obj))); // Розкоментуйте для дебагу
         
         parsedNotams.push(obj);
     }
-  }); // Конец forEach для doc.querySelectorAll('pre')
+  }); // Кінець forEach для doc.querySelectorAll('pre')
 
   return parsedNotams;
 }
 
-// Функция для обновления слоев карты на основе отфильтрованных NOTAMов
+// Функція для оновлення шарів карти на основі відфільтрованих NOTAMів
 function updateMap(notamsToDisplay) {
-    clearActiveLayers(); // Очищаем текущие слои
+    clearActiveLayers(); // Очищаємо поточні шари
     notamsToDisplay.forEach(obj => {
         let layer = null;
-        let color = 'blue'; // Цвет по умолчанию
+        let color = 'blue'; // Колір за замовчуванням
 
-        // Определяем цвет в зависимости от типа NOTAM
+        // Визначаємо колір в залежності від типу NOTAM
         switch (obj.notamType) {
             case 'danger': color = 'red'; break;
             case 'airport': color = 'green'; break;
             case 'navigation': color = 'orange'; break;
             case 'restricted': color = 'purple'; break;
-            default: color = 'blue'; // Запасной цвет
+            default: color = 'blue'; // Запасний колір
         }
 
-        // Создаем слой Leaflet в зависимости от типа геометрии
+        // Створюємо шар Leaflet в залежності від типу геометрії
         if (obj.areaPolygon && obj.areaPolygon.length >= 3) {
             const validCoords = obj.areaPolygon.filter(coord => coord && coord.lat != null && coord.lon != null);
             if (validCoords.length >=3) layer = L.polygon(validCoords, { color: color });
@@ -590,79 +587,79 @@ function updateMap(notamsToDisplay) {
              if (obj.point.lat != null) layer = L.circleMarker(obj.point, { radius: 5, color: color, fillColor: color, fillOpacity: 0.8 });
         }
 
-        // Добавляем слой на карту и привязываем всплывающее окно
+        // Додаємо шар на карту і прив'язуємо спливаюче вікно
         if (layer) {
-            layer.notamId = obj.id; // Сохраняем ID для легкого поиска
+            layer.notamId = obj.id; // Зберігаємо ID для легкого пошуку
             layer.addTo(map).bindPopup(notamToText(obj));
-            activeLayers.push(layer); // Добавляем слой в список активных\
+            activeLayers.push(layer); // Додаємо шар у список активних
         }
     });
 }
 
-// Функция для обновления списка NOTAM в боковой панели
+// Функція для оновлення списку NOTAM в боковій панелі
 function updateNotamList(notamsToDisplay) {
     const notamListElement = document.getElementById('notam-list');
-    if (!notamListElement) return; // Проверяем, существует ли элемент
+    if (!notamListElement) return; // Перевіряємо, чи існує елемент
 
-// Очищаем текущий список, но сохраняем заголовок и фильтры
+// Очищаємо поточний список, але зберігаємо заголовок і фільтри
     notamListElement.querySelectorAll('.notam-item').forEach(item => item.remove());
 
     notamsToDisplay.forEach(notam => {
         const notamItem = document.createElement('div');
         notamItem.classList.add('notam-item');
-        // Добавляем класс для цвета в зависимости от типа NOTAM
+        // Додаємо клас для кольору в залежності від типу NOTAM
         if (notam.notamType) {
             notamItem.classList.add(`notam-item--${notam.notamType}`);
         }
-        // Добавляем data-атрибут для легкого поиска
+        // Додаємо data-атрибут для легкого пошуку
         notamItem.dataset.notamId = notam.id;
 
         notamItem.innerHTML = `
             <div class="notam-id">${notam.id}</div>
             <div class="notam-summary">${notam.E ? notam.E.split('\n')[0] : 'Нет описания'}</div>
         `;
-        // Добавляем слушатель клика для центрирования карты на NOTAM
+        // Додаємо слухач кліка для центровання карти на NOTAM
         notamItem.addEventListener('click', () => {
             let layer = activeLayers.find(l => l.notamId === notam.id);
 
             if (layer) {
-                // Если слой скрыт, сначала показываем его
+                // Якщо шар прихований, спочатку показуємо його
                 if (hiddenLayers.has(notam.id)) {
-                    layer = showLayer(notam.id); // showLayer вернет нам слой
+                    layer = showLayer(notam.id); // showLayer поверне нам шар
                 }
-                // Центрируем карту в зависимости от типа слоя
+                // Центруємо карту в залежності від типу шару
                 if (layer instanceof L.Marker || layer instanceof L.CircleMarker) {
-                    map.setView(layer.getLatLng(), 10); // Приближаемся к точке
+                    map.setView(layer.getLatLng(), 10); // Приближаємося до точки
                 } else if (layer instanceof L.Circle || layer instanceof L.Polygon) {
-                    map.fitBounds(layer.getBounds()); // Подгоняем границы для круга/полигона
+                    map.fitBounds(layer.getBounds()); // Підганяємо границі для круга/полигона
                 }
-                layer.openPopup(); // Открываем всплывающее окно
+                layer.openPopup(); // Відкриваємо спливаюче вікно
             }
         });
         notamListElement.appendChild(notamItem);
     });
 }
 
-// Функция для скрытия слоя
+// Функція для приховування шару
 function hideLayer(notamId) {
     const layer = activeLayers.find(l => l.notamId === notamId);
     if (!layer || !map.hasLayer(layer)) return;
 
-    layer.closePopup(); // Закрываем popup перед скрытием
+    layer.closePopup(); // Закриваємо popup перед приховуванням
     map.removeLayer(layer);
     hiddenLayers.add(notamId);
 
-    // Обновляем стиль элемента списка, чтобы визуально показать, что он скрыт
+    // Оновлюємо стиль елемента списку, щоб візуально показати, що він прихований
     const listItem = document.querySelector(`.notam-item[data-notam-id="${notamId}"]`);
     if (listItem) {
         listItem.classList.add('hidden-layer');
     }
 }
 
-// Функция для показа слоя
+// Функція для показу шару
 function showLayer(notamId) {
     const layer = activeLayers.find(l => l.notamId === notamId);
-    if (!layer || map.hasLayer(layer)) return layer; // Если слоя нет или он уже на карте, выходим
+    if (!layer || map.hasLayer(layer)) return layer; // Якщо шару немає або він вже на карті, виходимо
 
     map.addLayer(layer);
     hiddenLayers.delete(notamId);
@@ -670,27 +667,27 @@ function showLayer(notamId) {
     const listItem = document.querySelector(`.notam-item[data-notam-id="${notamId}"]`);
     listItem?.classList.remove('hidden-layer');
 
-    return layer; // Возвращаем слой для дальнейших действий (например, центрирования)
+    return layer; // Повертаємо шар для подальших дій (наприклад, центровання)
 }
-// Функция для применения фильтров и обновления карты/списка
+// Функція для застосування фільтрів і оновлення карти/списку
 function applyFilters() {
-        // Получаем состояние фильтра "Новые"
+        // Отримуємо стан фільтра "Нові"
     const showNewOnly = document.getElementById('filter-new')?.checked || false;
     const showUnlimitedHeightOnly = document.getElementById('filter-unlimited-height')?.checked || false;
-        // Получаем выбранные типы NOTAM из чекбоксов
-    const typeCheckboxes = document.querySelectorAll('.type-filter'); // Получаем все чекбоксы типов
+        // Отримуємо вибрані типи NOTAM з чекбоксів
+    const typeCheckboxes = document.querySelectorAll('.type-filter'); // Отримуємо всі чекбокси типів
     const selectedTypes = Array.from(typeCheckboxes)
-                                .filter(cb => cb.id !== 'filter-new') // Исключаем чекбокс "Только новые"
+                                .filter(cb => cb.id !== 'filter-new') // Виключаємо чекбокс "Тільки нові"
                                 .filter(cb => cb.checked)
                                 .map(cb => cb.value);
     const selectedAirport = document.getElementById('airport-filter')?.value || "all";
 
     console.log('Применяются фильтры - Типи:', selectedTypes, 'Нові:', showNewOnly, 'Без обмеж. висоти:', showUnlimitedHeightOnly, 'Аеропорт:', selectedAirport);
 
-    // Фильтруем все загруженные NOTAMы
+    // Фільтруємо всі завантажені NOTAMи
     const filteredNotams = allNotams.filter(notam => {
-        // Если ни один тип не выбран ИЛИ выбранный тип присутствует в списке
-        // Убедимся, что notam.notamType существует перед проверкой
+        // Якщо жоден тип не вибрано АБО вибраний тип присутній у списку
+        // Переконаємося, що notam.notamType існує перед перевіркою
         const typeMatch = selectedTypes.length === 0 || (notam.notamType && selectedTypes.includes(notam.notamType));
         const newMatch = !showNewOnly || newNotamIds.has(notam.id);
         const unlimitedHeightMatch = !showUnlimitedHeightOnly || (notam.G && notam.G.toUpperCase() === 'UNL');
@@ -699,7 +696,7 @@ function applyFilters() {
         return typeMatch && newMatch && unlimitedHeightMatch && airportMatch;
     });
 
-    // Обновляем карту и список с отфильтрованными NOTAMами
+    // Оновлюємо карту і список з відфільтрованими NOTAMами
     updateMap(filteredNotams);
     updateNotamList(filteredNotams);
 }
@@ -750,36 +747,36 @@ async function fetchWithRetry(url, options = {}) {
     // Якщо цикл завершився, значить всі спроби були невдалі
     throw lastError;
 }
-// Вспомогательная функция для парсинга даты NOTAM в UTC Date
+// Допоміжна функція для парсинга дати NOTAM в UTC Date
 function parseNotamDateToUTC(dateStr) {
     if (!dateStr || dateStr.length !== 10) return null;
 
     const year = parseInt("20" + dateStr.substring(0, 2));
-    const month = parseInt(dateStr.substring(2, 4)) - 1; // Месяцы в JS Date 0-индексированы
+    const month = parseInt(dateStr.substring(2, 4)) - 1; // Місяці в JS Date 0-індексовані
     const day = parseInt(dateStr.substring(4, 6));
     const hours = parseInt(dateStr.substring(6, 8));
     const minutes = parseInt(dateStr.substring(8, 10));
 
     if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(minutes)) {
-        console.warn("Неверный формат даты NOTAM:", dateStr);
+        console.warn("Невірний формат дати NOTAM:", dateStr);
         return null;
     }
 
     try {
         return new Date(Date.UTC(year, month, day, hours, minutes));
     } catch (e) {
-        console.error("Ошибка создания объекта Date:", e);
+        console.error("Помилка створення об'єкта Date:", e);
         return null;
     }
 }
-// Функция для отправки распарсенных NOTAMов на сервер для сохранения
+// Функція для відправки розпарсених NOTAMів на сервер для збереження
 async function saveNotamsToServer(notamsToSave) {
   if (!notamsToSave || notamsToSave.length === 0) {
-    console.log("Нет NOTAMов для сохранения на сервере.");
+    console.log("Немає NOTAMів для збереження на сервері.");
     return;
   }
   try {
-    // Предполагается, что ваш Python прокси-сервер запущен на порту 8000
+    // Передбачається, що ваш Python проксі-сервер запущений на порту 8000
     const response = await fetch('http://localhost:8000/save_notams_on_server', {
       method: 'POST',
       headers: {
@@ -789,23 +786,23 @@ async function saveNotamsToServer(notamsToSave) {
     });
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Ошибка сервера при сохранении NOTAMов: ${response.status} ${errorText}`);
+      throw new Error(`Помилка сервера при збереженні NOTAMів: ${response.status} ${errorText}`);
     }
     const result = await response.json();
-    console.log("NOTAMы успешно отправлены на сервер:", result.message || "Сохранено");
+    console.log("NOTAMи успішно відправлені на сервер:", result.message || "Збережено");
   } catch (error) {
-    console.error("Ошибка при отправке NOTAMов на сервер:", error);
-    // Можно добавить уведомление для пользователя, если необходимо
-    // alert(`Не удалось сохранить NOTAMы на сервере: ${error.message}`);
+    console.error("Помилка при відправці NOTAMів на сервер:", error);
+    // Можна додати сповіщення для користувача, якщо необхідно
+    // alert(`Не вдалося зберегти NOTAMи на сервері: ${error.message}`);
   }
 }
 
-// Функция для загрузки NOTAMов с источника
+// Функція для завантаження NOTAMів з джерела
 async function loadNotam(forceRefresh = false, specificIcao = null) {
   if (specificIcao) {
-    console.log(`Попытка загрузки NOTAM для ${specificIcao}...`);
+    console.log(`Спроба завантаження NOTAM для ${specificIcao}...`);
   } else {
-    console.log('Попытка загрузки NOTAM для всех аэропортов...');
+    console.log('Спроба завантаження NOTAM для всіх аеропортів...');
   }
 
   let cachedNotamsData = null;
@@ -820,38 +817,38 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
         const ageMinutes = (now - lastUpdated) / (1000 * 60);
 
         if (ageMinutes < CACHE_STALE_MINUTES && cachedNotamsData.notams && cachedNotamsData.notams.length > 0) {
-          allNotams = cachedNotamsData.notams; // Загружаем из кеша
-          newNotamIds.clear(); // Нет "новых" относительно этого свежего кеша
-          console.log(`Загружено ${allNotams.length} NOTAMов из кеша (возраст: ${ageMinutes.toFixed(1)} мин).`);
+          allNotams = cachedNotamsData.notams; // Завантажуємо із кеша
+          newNotamIds.clear(); // Немає "нових" відносно цього свіжого кеша
+          console.log(`Загружено ${allNotams.length} NOTAMів з кеша (вік: ${ageMinutes.toFixed(1)} хв).`);
           applyFilters();
-          return; // Кеш свежий и валидный, запрос к серверу не нужен
+          return; // Кеш свіжий і валідний, запит до сервера не потрібен
         } else {
           console.log(cachedNotamsData.notams && cachedNotamsData.notams.length > 0
-            ? `Кеш устарел (возраст: ${ageMinutes.toFixed(1)} мин). Загрузка с сервера.`
-            : "Кеш пуст или невалиден. Загрузка с сервера.");
-          // Сохраняем cachedNotamsData.notams для сравнения "новых" после загрузки
+            ? `Кеш устарів (вік: ${ageMinutes.toFixed(1)} хв). Завантаження з сервера.`
+            : "Кеш пуст чи невалідний. Виконується завантаження з сервера.");
+          // Зберігаємо cachedNotamsData.notams для порівняння "нових" після завантаження
         }
       } else {
-        console.log("Кеш не найден. Загрузка с сервера.");
+        console.log("Кеш не знайдено. Завантаження з сервера.");
       }
     } catch (e) {
-      console.warn("Ошибка чтения или парсинга кеша:", e);
-      cachedNotamsData = null; // Гарантируем загрузку с сервера, если кеш поврежден
+      console.warn("Помилка читання або парсингу кеша:", e);
+      cachedNotamsData = null; // Гарантуємо завантаження з сервера, якщо кеш пошкоджений
     }
   } else {
-    console.log("Принудительное обновление: кеш будет проигнорирован.");
-    // При forceRefresh нам все еще может понадобиться cachedNotamsData для сравнения "новых"
-    // поэтому попробуем его загрузить, если он есть, но не будем из него выходить.
+    console.log("Примусове оновлення: кеш буде проігноровано.");
+    // При forceRefresh нам все ще може знадобитися cachedNotamsData для порівняння "нових"
+    // тому спробуємо його завантажити, якщо він є, але не будемо з нього виходити.
     const cachedItem = localStorage.getItem(CACHE_KEY);
     if (cachedItem) try { cachedNotamsData = JSON.parse(cachedItem); } catch (e) { /*ignore*/ }
   }
 
-  // Если дошли сюда, значит, нужно загружать с сервера для каждого ICAO
+  // Якщо дійшли сюди, значить, потрібно завантажувати з сервера для кожного ICAO
   const icaoList = specificIcao ? [specificIcao] : TARGET_ICAOS_STRING.split(' ');
   let accumulatedParsedNotams = [];
   let fetchErrors = [];
 
-  // Определяем ID ранее известных NOTAMов (из устаревшего кеша или пустого списка)
+  // Визначаємо ID раніше відомих NOTAMів (з застарілого кеша або пустого списку)
   const previouslyKnownNotamIds = new Set(
     (cachedNotamsData && cachedNotamsData.notams) ? cachedNotamsData.notams.map(n => n.id) : []
   );
@@ -873,7 +870,7 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
         let text = await resp.text();
         const parsedForIcao = parseNotams(text);    
         accumulatedParsedNotams.push(...parsedForIcao);
-        console.log(`Загружено и распарсено ${parsedForIcao.length} NOTAMов для ${icao}.`);
+        console.log(`Завантажено і розпарсено ${parsedForIcao.length} NOTAMів для ${icao}.`);
       } catch (e) {
         console.error(`Не вдалося завантажити NOTAM для ${icao} після всіх спроб:`, e);
         fetchErrors.push({ icao, error: e.message });
@@ -882,15 +879,15 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
 
     if (fetchErrors.length > 0) {
       let errorSummary = fetchErrors.map(err => `${err.icao}: ${err.error}`).join('; ');
-      console.warn(`Произошли ошибки при загрузке NOTAMов для некоторых аэропортов: ${errorSummary}`);
-      // Можно вывести alert, если все запросы не удались, или если это критично
+      console.warn(`Виникли помилки при завантаженні NOTAMів для деяких аеропортів: ${errorSummary}`);
+      // Можна вивести alert, якщо всі запити не вдалися, або якщо це критично
       if (fetchErrors.length === icaoList.length) {
-        throw new Error("Не удалось загрузить NOTAMы ни для одного аэропорта. " + errorSummary);
+        throw new Error("Не вдалося завантажити NOTAMи ні для одного аеропорта. " + errorSummary);
       }
     }
 
-    // --- Дедупликация и ОБЪЕДИНЕНИЕ NOTAMов ---
-    // 1. Начинаем с карты, заполненной NOTAMами из кеша (активными и архивными)
+    // --- Дедуплікація та ОБ'ЄДНАННЯ NOTAMів ---
+    // 1. Починаємо з карти, заповненої NOTAMами з кеша (активними та архівними)
     const uniqueNotamMap = new Map();
     if (cachedNotamsData) {
         const cachedAll = [
@@ -902,15 +899,15 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
         });
     }
 
-    // 2. Добавляем/обновляем NOTAMы, полученные с сервера.
-    // Если NOTAM с таким ID уже есть, он будет заменен свежей версией.
+    // 2. Додаємо/оновлюємо NOTAMи, отримані з сервера.
+    // Якщо NOTAM з таким ID вже є, він буде замінений свіжою версією.
     accumulatedParsedNotams.forEach(notam => {
         uniqueNotamMap.set(notam.id, notam);
     });
     
     let fullMergedNotams = Array.from(uniqueNotamMap.values());
 
-    // 3. Пересчитываем статус 'archive' для всех NOTAMов в объединенном списке
+    // 3. Перераховуємо статус 'archive' для всіх NOTAMів в об'єднаному списку
     fullMergedNotams.forEach(notam => {
         if (notam.C) {
             const endDate = parseNotamDateToUTC(notam.C);
@@ -918,86 +915,86 @@ async function loadNotam(forceRefresh = false, specificIcao = null) {
         }
     });
 
-    // Отправляем ПОЛНЫЙ объединенный список на сервер для сохранения
+    // Відправляємо ПОВНИЙ об'єднаний список на сервер для збереження
     await saveNotamsToServer(fullMergedNotams);
 
-    // Определяем новые NOTAMы для подсветки
+    // Визначаємо нові NOTAMи для підсвітки
     newNotamIds.clear();
     fullMergedNotams.forEach(notam => {
       if (!previouslyKnownNotamIds.has(notam.id)) { newNotamIds.add(notam.id); }
     });
 
-    // Фильтруем ТОЛЬКО АКТИВНЫЕ для отображения и дальнейшей работы
+    // Фільтруємо ТІЛЬКИ АКТИВНІ для відображення і подальшої роботи
     allNotams = fullMergedNotams.filter(n => !n.archive);
-    console.log(`Обработано ${fullMergedNotams.length} уникальных NOTAMов. Активных для отображения: ${allNotams.length}. Новых: ${newNotamIds.size}`);
+    console.log(`Оброблено ${fullMergedNotams.length} унікальних NOTAMів. Активних для відображення: ${allNotams.length}. Нових: ${newNotamIds.size}`);
 
-    // Сохраняем в кеш, разделяя на активные и архивные
+    // Зберігаємо в кеш, розділяючи на активні і архівні
     try {
       const newCacheEntry = {
         lastUpdated: new Date().toISOString(),
-          notams: allNotams, // Уже отфильтрованные активные
+          notams: allNotams, // Вже відфільтровані активні
           archivedNotams: fullMergedNotams.filter(n => n.archive)
       };
       localStorage.setItem(CACHE_KEY, JSON.stringify(newCacheEntry));
-      console.log(`Сохранено в кеш: актуальных - ${newCacheEntry.notams.length}, архивных - ${newCacheEntry.archivedNotams.length}`);
+      console.log(`Збережено в кеш: актуальних - ${newCacheEntry.notams.length}, архівних - ${newCacheEntry.archivedNotams.length}`);
     } catch (e) {
-      console.error("Ошибка сохранения в кеш:", e);
-      alert('Не удалось сохранить NOTAMы в локальное хранилище: превышена квота.');
+      console.error("Помилка збереження в кеш:", e);
+      alert('Не вдалося зберегти NOTAMи в локальне сховище: перевищена квота.');
     }
-    applyFilters(); // Применяем фильтры к списку АКТИВНЫХ NOTAMов
+    applyFilters(); // Застосовуємо фільтри до списку АКТИВНИХ NOTAMів
 
   } catch (e) {
-    console.error('Ошибка загрузки или парсинга NOTAM с сервера:', e);
-    alert('Ошибка загрузки с сервера: ' + e.message + '. Отображаются данные из устаревшего кеша (если есть) или пустой список.');
-    // Если загрузка с сервера не удалась, пытаемся использовать устаревший кеш как запасной вариант
+    console.error('Помилка завантаження або парсингу NOTAM з сервера:', e);
+    alert('Помилка завантаження з сервера: ' + e.message + '. Відображаються дані з застарілого кеша (якщо є) або порожній список.');
+    // Якщо завантаження з сервера не вдалося, намагаємося використовувати застарілий кеш як запасний варіант
     if (cachedNotamsData && cachedNotamsData.notams) {
-      allNotams = cachedNotamsData.notams; // Возвращаемся к устаревшему кешу
-      newNotamIds.clear(); // В этом случае "новых" нет относительно этого кеша
-      console.warn("Используются данные из устаревшего кеша из-за ошибки сервера.");
+      allNotams = cachedNotamsData.notams; // Повертаємося до застарілого кешу
+      newNotamIds.clear(); // У цьому випадку "нових" немає відносно цього кешу
+      console.warn("Використовуються дані з застарілого кеша через помилку сервера.");
       applyFilters();
     } else {
-      // Нет кеша и сервер не ответил
-      allNotams = []; // Убеждаемся, что список пуст
+      // Немає кеша і сервер не відповів
+      allNotams = []; // Переконуємося, що список порожній
       newNotamIds.clear();
-      applyFilters(); // Отображаем пустое состояние
+      applyFilters(); // Відображаємо порожній стан
     }
   }
 }
 
-// Добавляем слушатели событий для чекбоксов фильтров типов
+// Додаємо слухачі подій для чекбоксів фільтрів типів
 document.querySelectorAll('.type-filter').forEach(checkbox => {
     checkbox.addEventListener('change', applyFilters);
 });
-// Добавляем слушатели для остальных фильтров
+// Додаємо слухачі для інших фільтрів
 document.getElementById('filter-new')?.addEventListener('change', applyFilters);
 document.getElementById('filter-unlimited-height')?.addEventListener('change', applyFilters);
 document.getElementById('airport-filter')?.addEventListener('change', applyFilters);
 
 
-// Добавляем слушатель для кнопки "Обновить NOTAM"
+// Додаємо слухач для кнопки "Оновити NOTAM"
 document.getElementById('refresh-notams-button')?.addEventListener('click', () => {
     const selectedAirport = document.getElementById('airport-filter')?.value || "all";
     if (selectedAirport === "all") {
-        console.log("Запрос на обновление NOTAM вручную для всех аэропортов...");
-        loadNotam(true); // Вызываем функцию загрузки с флагом принудительного обновления для всех
+        console.log("Запит на оновлення NOTAM вручну для всіх аеропортів...");
+        loadNotam(true); // Викликаємо функцію завантаження з прапором примусового оновлення для всіх
     } else {
-        console.log(`Запрос на обновление NOTAM вручную для ${selectedAirport}...`);
-        loadNotam(true, selectedAirport); // Вызываем с указанием конкретного ICAO
+        console.log(`Запит на оновлення NOTAM вручну для ${selectedAirport}...`);
+        loadNotam(true, selectedAirport); // Викликаємо з вказівкою конкретного ICAO
     }
 });
-// Запускаем загрузку NOTAMов после полной загрузки DOM
+// Запускаємо завантаження NOTAMів після повної завантаження DOM
 document.addEventListener('DOMContentLoaded', () => {
     populateAirportFilter(); // Заповнюємо фільтр аеропортів при завантаженні сторінки
-    loadNotam(); // Обычный вызов, будет использовать кеш если возможно
+    loadNotam(); // Звичайний виклик, буде використовувати кеш якщо можливо
 });
 
-// Добавляем контроллер слоев на карту
+// Додаємо контролер шарів на карту
 const overlayMaps = {
-    "Аеродроми РФ": airbasesLayer
+    "Аеродроми рф": airbasesLayer
 };
 
-// Добавляем контроллер слоев на карту
+// Додаємо контролер шарів на карту
 L.control.layers(baseMaps, overlayMaps).addTo(map);
 
-// Добавляем линейку масштаба на карту (метрическая система, без имперской)
+// Додаємо лінійку масштабу на карту (метрична система, без імперської)
 L.control.scale({ metric: true, imperial: false }).addTo(map);
