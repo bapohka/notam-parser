@@ -49,16 +49,19 @@ document.getElementById('airport-filter')?.addEventListener('change', applyFilte
 
 
 // Додаємо слухач для кнопки "Оновити NOTAM"
-document.getElementById('refresh-notams-button')?.addEventListener('click', () => {
-    const selectedAirport = document.getElementById('airport-filter')?.value || "all";
-    if (selectedAirport === "all") {
-        console.log("Запит на оновлення NOTAM вручну для всіх аеропортів...");
-        loadNotam(true); // Викликаємо функцію завантаження з прапором примусового оновлення для всіх
-    } else {
-        console.log(`Запит на оновлення NOTAM вручну для ${selectedAirport}...`);
-        loadNotam(true, selectedAirport); // Викликаємо з вказівкою конкретного ICAO
-    }
-});
+const refreshButton = document.getElementById('refresh-notams-button');
+if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+        console.log("Запит на ручне оновлення NOTAM...");
+        // Примусово оновлюємо дані та оновлюємо інтерфейс після завершення
+        loadNotam(true).then(updatedData => {
+            allNotams = updatedData.notams;
+            newNotamIds = updatedData.newIds;
+            applyFilters();
+            console.log("Інтерфейс оновлено після ручного запиту.");
+        });
+    });
+}
 
 // --- Нова логіка ініціалізації додатку ---
 
@@ -67,10 +70,11 @@ document.getElementById('refresh-notams-button')?.addEventListener('click', () =
  * і негайно відображає їх на карті.
  */
 async function loadInitialData() {
-    console.log("Завантаження початкових NOTAM з файлу...");
+    console.log("Крок 1: Завантаження початкових NOTAM з файлу notams_data.json...");
     try {
-        // Прямий запит до ендпоінту, що віддає збережені дані
-        const response = await fetch(`${config.API_BASE_URL}/load_notams`);
+        // Прямий запит до файлу. Це працює як для статичного сайту,
+        // так і для локального сервера, який віддає статичні файли.
+        const response = await fetch('./notams_data.json');
         if (!response.ok) {
             throw new Error(`Помилка HTTP: ${response.status}`);
         }
@@ -92,7 +96,7 @@ async function loadInitialData() {
  * Запускає повне оновлення NOTAM з віддаленого сервера у фоновому режимі.
  */
 async function updateInBackground() {
-    console.log("Запуск фонового оновлення NOTAM...");
+    console.log("Крок 2: Запуск фонового оновлення NOTAM з сервера...");
     const updatedData = await loadNotam(true); // Використовуємо існуючу функцію з примусовим оновленням
     allNotams = updatedData.notams;
     newNotamIds = updatedData.newIds;
@@ -102,9 +106,25 @@ async function updateInBackground() {
 
 document.addEventListener('DOMContentLoaded', () => {
     uiManager.populateAirportFilter();
+
+    const isLocalEnv = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // Деактивуємо кнопку оновлення, якщо ми не в локальному середовищі
+    if (refreshButton && !isLocalEnv) {
+        refreshButton.disabled = true;
+        refreshButton.textContent = 'Оновлення недоступне';
+        refreshButton.title = 'Ця функція доступна лише при локальному запуску з сервером.';
+    }
+
+    // Завжди завантажуємо початкові дані з файлу
     loadInitialData().then(() => {
-        // Після того, як початкові дані завантажені та відображені,
-        // запускаємо оновлення у фоні.
-        setTimeout(updateInBackground, 500); // Невелика затримка для плавності
+        // Якщо ми в локальному середовищі, запускаємо фонове оновлення
+        if (isLocalEnv) {
+            console.log("Локальне середовище виявлено. Запуск фонового оновлення.");
+            // Невелика затримка для плавності, щоб користувач побачив початкові дані
+            setTimeout(updateInBackground, 500);
+        } else {
+            console.log("Статичний сайт виявлено. Фонове оновлення пропущено.");
+        }
     });
 });

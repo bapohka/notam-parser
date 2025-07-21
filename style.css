@@ -1142,6 +1142,15 @@ select.form-control {
     opacity: 0.9;
 }
 
+.button:disabled,
+.button[disabled] {
+    background-color: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
+    color: var(--color-background);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 #map {
     height: 100vh; /* Або фіксована висота, наприклад 600px */
     width: 100%;
