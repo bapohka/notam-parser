@@ -59,11 +59,52 @@ document.getElementById('refresh-notams-button')?.addEventListener('click', () =
         loadNotam(true, selectedAirport); // Викликаємо з вказівкою конкретного ICAO
     }
 });
-// Запускаємо завантаження NOTAMів після повної завантаження DOM
-document.addEventListener('DOMContentLoaded', async () => {
-    uiManager.populateAirportFilter(); // Заповнюємо фільтр аеропортів при завантаженні сторінки
-    const initialLoad = await loadNotam();
-    allNotams = initialLoad.notams;
-    newNotamIds = initialLoad.newIds;
-    applyFilters();
+
+// --- Нова логіка ініціалізації додатку ---
+
+/**
+ * Завантажує початкові дані з локального файлу notams_data.json через сервер
+ * і негайно відображає їх на карті.
+ */
+async function loadInitialData() {
+    console.log("Завантаження початкових NOTAM з файлу...");
+    try {
+        // Прямий запит до ендпоінту, що віддає збережені дані
+        const response = await fetch(`${config.API_BASE_URL}/load_notams`);
+        if (!response.ok) {
+            throw new Error(`Помилка HTTP: ${response.status}`);
+        }
+        const notamsFromFile = await response.json();
+        
+        allNotams = notamsFromFile;
+        newNotamIds.clear(); // При початковому завантаженні "нових" NOTAM немає
+        
+        console.log(`Завантажено ${allNotams.length} NOTAM з файлу. Відображення...`);
+        applyFilters(); // Відображаємо дані на карті та у списку
+
+    } catch (error) {
+        console.error("Не вдалося завантажити початкові дані з файлу:", error);
+        // Можна показати повідомлення користувачу через uiManager
+    }
+}
+
+/**
+ * Запускає повне оновлення NOTAM з віддаленого сервера у фоновому режимі.
+ */
+async function updateInBackground() {
+    console.log("Запуск фонового оновлення NOTAM...");
+    const updatedData = await loadNotam(true); // Використовуємо існуючу функцію з примусовим оновленням
+    allNotams = updatedData.notams;
+    newNotamIds = updatedData.newIds;
+    console.log("Фонове оновлення завершено. Оновлення інтерфейсу...");
+    applyFilters(); // Оновлюємо інтерфейс з новими даними
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    uiManager.populateAirportFilter();
+    loadInitialData().then(() => {
+        // Після того, як початкові дані завантажені та відображені,
+        // запускаємо оновлення у фоні.
+        setTimeout(updateInBackground, 500); // Невелика затримка для плавності
+    });
 });
