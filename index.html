@@ -16,6 +16,7 @@
             </div>
         </header>
         
+        <button id="sidebar-toggle" class="sidebar-toggle-button">☰</button>
         <div class="main-content">
             <!-- Ліва бокова панель -->
             <div class="sidebar">
@@ -100,7 +101,79 @@
         </div>
     </div>
 
+
+    <!-- Modal for NOTAM Details -->
+    <div id="notam-detail-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close-button">&times;</button>
+            <div id="modal-body">
+                <!-- NOTAM details will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="module" src="app.js"></script>
+
+    <script>
+        // Цю логіку можна перенести у ваш файл app.js, але для швидкого запуску вона тут.
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Логіка для перемикання бічної панелі ---
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const notamList = document.getElementById('notam-list');
+
+            if (sidebar && sidebarToggle) {
+                sidebarToggle.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Зупиняємо спливання, щоб не закрити панель одразу
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // --- Логіка для модального вікна з деталями NOTAM ---
+            const modal = document.getElementById('notam-detail-modal');
+            const modalBody = document.getElementById('modal-body');
+            const closeModalButton = modal.querySelector('.modal-close-button');
+
+            function showNotamDetails(contentHTML) {
+                modalBody.innerHTML = contentHTML;
+                modal.style.display = 'flex';
+            }
+
+            function hideNotamDetails() {
+                modal.style.display = 'none';
+                modalBody.innerHTML = ''; // Очищуємо вміст для наступного разу
+            }
+
+            // Обробник для відкриття модального вікна при кліку на NOTAM
+            if (notamList) {
+                notamList.addEventListener('click', (event) => {
+                    const notamItem = event.target.closest('.notam-item');
+                    if (notamItem) {
+                        // Клонуємо вміст NOTAM і показуємо в модальному вікні
+                        showNotamDetails(notamItem.innerHTML);
+                        
+                        // На мобільних пристроях ховаємо бічну панель після вибору
+                        if (sidebar.classList.contains('open')) {
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                });
+            }
+
+            // Обробники для закриття модального вікна
+            if (modal) {
+                closeModalButton.addEventListener('click', hideNotamDetails);
+
+                modal.addEventListener('click', (event) => {
+                    // Закриваємо, якщо клік був на темному фоні (overlay), а не на вмісті
+                    if (event.target === modal) {
+                        hideNotamDetails();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

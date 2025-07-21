@@ -14,6 +14,15 @@ DATA_FILE = "notams_data.json" # Переконайтесь, що цей фай�
 
 
 class CORSRequestHandler(SimpleHTTPRequestHandler):
+    def _send_cors_error(self, status_code, message):
+        """Helper to send a JSON error response with CORS headers."""
+        self.send_response(status_code)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        error_payload = json.dumps({"error": message}).encode('utf-8')
+        self.wfile.write(error_payload)
+
     def do_GET(self):
         if self.path.startswith("/proxy?url="):
             parsed_path = urllib.parse.urlparse(self.path)
@@ -21,11 +30,11 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
             target_url = query_params.get('url', [None])[0]
 
             if not target_url:
-                self.send_error(400, "Bad Request: 'url' parameter is missing")
+                self._send_cors_error(400, "Bad Request: 'url' parameter is missing")
                 return
 
             if not target_url.startswith(ALLOWED_PROXY_HOST):
-                self.send_error(403, f"Forbidden: Proxying is only allowed to {ALLOWED_PROXY_HOST}")
+                self._send_cors_error(403, f"Forbidden: Proxying is only allowed to {ALLOWED_PROXY_HOST}")
                 return
 
             try:
@@ -33,21 +42,12 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 headers = {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"
                 }
-                # Виконуємо запит до цільового сервера
-                # Передаємо деякі заголовки від клієнта, якщо це необхідно,
-                # але для простоти тут цього не робимо.
-                # Збільшуємо таймаут до 30 секунд (10 для з'єднання, 20 для читання)
-                # і додаємо User-Agent
-                response = requests.get(target_url, headers=headers, timeout=(10, 20))
+                response = requests.get(target_url, headers=headers, timeout=(20, 35))
                 response.raise_for_status()  # Викличе виняток для HTTP-помилок 4xx/5xx
 
-                # Відправляємо відповідь клієнту
                 self.send_response(response.status_code)
-                # Додаємо необхідний CORS-заголовок
                 self.send_header("Access-Control-Allow-Origin", "*")
 
-                # Копіюємо інші релевантні заголовки з відповіді цільового сервера
-                # Виключаємо заголовки, які можуть викликати проблеми або керуються сервером/проксі
                 excluded_headers = [
                     'content-encoding',      # requests сам обробляє розпакування
                     'transfer-encoding',
@@ -63,11 +63,10 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(response.content)
 
             except requests.exceptions.HTTPError as e:
-                # Ошибка от целевого сервера (4xx, 5xx)
-                self.send_error(e.response.status_code, f"Error from target: {e.response.text[:200]}")
+                # Error from target server (4xx, 5xx)
+                self._send_cors_error(e.response.status_code, f"Error from target server: {str(e)}")
             except requests.exceptions.RequestException as e:
-                # Інші помилки запиту (мережа, таймаут тощо)
-                self.send_error(502, f"Proxy Error: {e}") # 502 Bad Gateway (Неправильний шлюз)
+                self._send_cors_error(502, f"Proxy Error: {str(e)}") # 502 Bad Gateway
             return
         elif self.path == "/load_notams":
             print(f"Attempting to load NOTAMs from {DATA_FILE}...")
@@ -84,10 +83,10 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                     print(f"Successfully sent {len(loaded_data)} NOTAMs from {DATA_FILE}")
                 except json.JSONDecodeError as e:
                     print(f"Error decoding JSON from {DATA_FILE}: {e}")
-                    self.send_error(500, f"Error decoding data file: {e}")
+                    self._send_cors_error(500, f"Error decoding data file: {e}")
                 except Exception as e:
                     print(f"Error reading or sending data from {DATA_FILE}: {e}")
-                    self.send_error(500, f"Error processing data file: {e}")
+                    self._send_cors_error(500, f"Error processing data file: {e}")
             else:
                 print(f"Data file not found: {DATA_FILE}. Sending empty array.")
                 # Якщо файл не знайдено, відправляємо порожній масив
@@ -109,7 +108,7 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 new_notams_from_client = json.loads(post_data_bytes.decode('utf-8'))
 
                 if not isinstance(new_notams_from_client, list):
-                    self.send_error(400, "Bad Request: Expected a JSON list of NOTAMs.")
+                    self._send_cors_error(400, "Bad Request: Expected a JSON list of NOTAMs.")
                     return
 
                 existing_data = []
@@ -156,13 +155,13 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                 print(f"Данные сохранены в {DATA_FILE}. Получено {len(new_notams_from_client)}, всего в файле {len(combined_data)}.")
 
             except json.JSONDecodeError:
-                self.send_error(400, "Bad Request: Invalid JSON.")
+                self._send_cors_error(400, "Bad Request: Invalid JSON.")
             except Exception as e:
                 print(f"Internal Server Error on POST: {e}") # Логуємо помилку на сервері
-                self.send_error(500, f"Internal Server Error: {str(e)}")
+                self._send_cors_error(500, f"Internal Server Error: {str(e)}")
             return
         else:
-            self.send_error(404, "Not Found")
+            self._send_cors_error(404, "Not Found")
 
     def do_OPTIONS(self): # Для обробки CORS preflight-запитів
         self.send_response(200, "ok")

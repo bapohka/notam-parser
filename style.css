@@ -1082,10 +1082,19 @@ select.form-control {
   }
   
   .map-legend {
-    top: var(--space-8);
-    right: var(--space-8);
-    left: var(--space-8);
-    width: auto;
+    /* On mobile, keep the legend in the corner, but smaller */
+    top: auto; /* Override previous settings */
+    left: auto; /* Override previous settings */
+    bottom: 30px; /* Position above Leaflet's attribution */
+    right: 10px;
+    max-width: 160px; /* Prevent it from being too wide */
+  }
+
+  .leaflet-popup-content {
+    min-width: 280px; /* Більш розумна мінімальна ширина для мобільних пристроїв */
+    max-width: 85vw;  /* Використовуємо ширину viewport, щоб уникнути переповнення */
+    max-height: 60vh; /* Коригуємо висоту для менших екранів */
+    font-size: var(--font-size-xs); /* Трохи зменшуємо шрифт для кращого вміщення */
   }
 }
 
@@ -1142,3 +1151,135 @@ select.form-control {
     flex-grow: 1; /* Дозволяє контейнеру займати доступний простір */
     height: 100%; /* Або інша відповідна висота */
 }
+
+
+        /* --- Mobile-First & Responsive Styles --- */
+
+        /* Ensure body takes full height and has no margin */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* Important for layout */
+            position: relative; /* Needed for absolute positioning of sidebar */
+        }
+
+        /* Sidebar: Hidden by default on mobile */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 90%; /* Take most of the screen width */
+            max-width: 350px; /* But not more than 350px */
+            height: 100%;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            transform: translateX(-100%); /* Start off-screen */
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Allow sidebar content to scroll */
+        }
+
+        .sidebar.open {
+            transform: translateX(0); /* Slide in */
+            box-shadow: 3px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .map-container {
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Hamburger Toggle Button: Visible only on mobile */
+        .sidebar-toggle-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001; /* Above the sidebar */
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 24px;
+            cursor: pointer;
+            display: block; /* Show on mobile */
+        }
+
+        /* NOTAM Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        #modal-body {
+            overflow-y: auto; /* Enable scrolling for the content itself */
+            flex-grow: 1;
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 769px) {
+            .sidebar {
+                position: static; /* Put it back in the normal flow */
+                transform: none; /* Always visible */
+                flex-shrink: 0; /* Prevent it from shrinking */
+                width: 350px;
+                box-shadow: none;
+            }
+
+            .sidebar-toggle-button {
+                display: none; /* Hide hamburger on desktop */
+            }
+
+            .app-header {
+                padding-left: 20px; /* Adjust header padding */
+            }
+        }
