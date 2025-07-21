@@ -1,0 +1,2153 @@
+[
+    {
+        "id": "A5240/25 NOTAMR A3107/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QIOAS/I/BO/A/000/999/5149N03914E025",
+        "A": "UUOO",
+        "B": "2507141605",
+        "C": "2509240900",
+        "E": "RWY 30: LOM AND LMM U/S DUE TO FLTCK EXPIRED.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A5239/25 NOTAMR A2760/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QNLAS/IV/BO/A/000/999/5149N03914E025",
+        "A": "UUOO",
+        "B": "2507141529",
+        "C": "2509240900",
+        "E": "RWY 30: LOM AP 289KHZ U/S.\nRWY 30: LMM A  595KHZ U/S.\nIAC NDB V RWY 30 NOT TO BE USED (AIP PAGE AD 2.1 UUOO-98),\nIAC NDB U RWY 30 NOT TO BE USED (AIP PAGE AD 2.1 UUOO-100).",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A4893/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMRLT/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2507040500",
+        "C": "2509040500",
+        "E": "RWY 12/30 CLSD FOR ALL ACFT TYPES EXC HEL.\nRWY SEGMENT FROM RWY 12 THR TO TWY B INT (INCLUDING) AVBL FOR HEL\nTKOF/LDG H24.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3896/25 NOTAMR A1200/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2506021123",
+        "C": "2509040500",
+        "E": "TWY C CLSD.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3895/25 NOTAMR A1201/25",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2506021122",
+        "C": "2509040500",
+        "E": "RWY 30:\n- APCH LGT,\n- RTHL,\n- CROSSBAR LIGHTS U/S.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3894/25 NOTAMR A1198/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMDXX/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2506021120",
+        "C": "2509040500",
+        "E": "DECLARED DIST:\nRWY 12: TORA 2000M  TODA 2150M, ASDA 2000M, LDA 2000M.\nRWY 30: TORA 2000M, TODA 2300M, ASDA 2000M, LDA 2000M.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3893/25 NOTAMR A1199/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2506021119",
+        "C": "2509040500",
+        "E": "TWY F CLSD.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3892/25 NOTAMR A1197/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMTCM/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2506021115",
+        "C": "2509040500",
+        "E": "1. THR 30 DISPLACED BY 300M TOWARDS ARP.\nDTHR COORD: 514836.02N 0391420.44E, ELEV 151.88M.\n2. RWY 30 LDG: VFR APCH ONLY PERMITTED DRG DAY LIGHT HR\n(VFR HEL OPS AVBL H24).\n3. TEMPO FRANGIBLE MOVABLE FENCE OF 1.6M HIGH INSTL 150M BEFORE\nDTHR 30 (ON NOT AVBL PORTION OF RWY).\n4. CONST AND INSTL WIP (EQPT HGT UP TO 6.5M) AT DIST 300M FM\nDTHR 30 AND FURTHER AWAY FM ARP.\n5. ACFT TAX TO/FROM RWY 12/30 CARRIED OUT ONLY VIA TWY A AND TWY B.\nACFT TKOF (EXC HEL) CARRIED OUT ONLY FROM RWY 30.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3385/25 NOTAMR A0596/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QACCH/IV/NBO/AE/000/999/5149N03914E050",
+        "A": "UUOO",
+        "B": "2505150753",
+        "C": "2508200800",
+        "E": "CTR AIP PAGE AD 2.1 UUOO-7,\nTABLE AD 2.17 AIR TRAFFIC SERVICES AIRSPACE,\nVERTICAL LIMITS: TEXT TO READ\nVORONEZH/CHERTOVITSKOYE CTR/GND-FL100 INSTEAD OF\nVORONEZH/CHERTOVITSKOYE CTR/GND-FL090.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 92600
+        },
+        "archive": false
+    },
+    {
+        "id": "A2999/25 NOTAMN",
+        "notamType": "airport",
+        "Q": "UUWV/QFAAH/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2507050600",
+        "C": "2509200600",
+        "E": "AD OPR HR: DAILY 0600-1700.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "G0355/25 NOTAMR G0184/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QGWAU/I/NBO/EA/000/999/5149N03913E150",
+        "A": "UUOO",
+        "B": "2507141421",
+        "C": "2509240900",
+        "E": "GBAS CH22407, CH20763, CH 21174 U/S: PROC RNAV (GNSS), SID/STAR\nRNAV (GNSS), GLS 12/30, RNAV 12/30 NOT PROVIDED.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.21666666666667
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "A5274/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2507151000",
+        "C": "2510151000",
+        "E": "TERMINAL F APN:\nSTAND 66 AVBL FOR PARKING OF TU204/214 ACFT TYPE.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4918/25 NOTAMR A2202/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2507040620",
+        "C": "2510032059",
+        "E": "TERMINAL B APRON:\n- PARKING OF A-350-900 TYPE ACFT ONTO STAND 181A PERMITTED WITH\nNOSE WHEEL POSITIONED AT POINT A,\n- PARKING OF A-321W TYPE ACFT AND OF ACFT WITH SHORTER LEN AND\nWINGSPAN PERMITTED ONTO STANDS 97B, 96B, 95B, 94B, 93B.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4616/25 NOTAMR A1867/25",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2506261000",
+        "C": "2509262059",
+        "E": "AD NOT AVBL AS ALTN EXC ACFT OF AIRLINES WITH GENERAL AGREEMENT\nON PROVISION OF AD SERVICES, ACFT CARRYING OUT FLT TO/FROM\nMOSCOW/SHEREMETYEVO AD, INTL FLT, VIP FLT, MEDICAL AND SAR FLT,\nEMERG FLT.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4615/25 NOTAMR A1868/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QFDAS/I/M/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2506261000",
+        "C": "2509262059",
+        "E": "APN OF TERMINAL F:\nVISUAL DOCKING GUIDANCE SYSTEM (SAFEDOCK VDGS) U/S ON ACFT STANDS\n46, 47, 48, 48A, 49, 50, 51, 52, 53, 53A, 54, 55, 56,\n57, 57A, 58, 59, 60.\nACFT TAX ONTO STANDS CARRIED OUT AFTER FOLLOW-ME VEHICLE OR UNDER\nMARSHALLER GUIDANCE.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4614/25 NOTAMR A1814/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QNVAS/IV/BO/A/000/999/5558N03725E025",
+        "A": "UUEE",
+        "B": "2506261000",
+        "C": "2509262059",
+        "E": "DVORDME MR 114.35 MHZ: DVOR U/S, APCH CHARTS SHALL NOT BE USED:\nIAC DVOR RWY 06L (AIP PAGE AD 2.1 UUEE-109),\nIAC DVOR RWY 24R (AIP PAGE AD 2.1 UUEE-110).",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A3993/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXXX/IV/M/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2506050740",
+        "C": "2509052059",
+        "E": "1. ACFT TAX ALONG TWY D AND TWY E UNDER OWN ENGINES POWER\nNOT PROVIDED.\n2. SHEREMETYEVO-APRON 4 PROVIDED CONTROL OF ACFT TOWING ALONG\nTWY D AND TWY E WITH FOLLOW-ME CAR ASSISTANCE.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3966/25 NOTAMR A1232/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2506041240",
+        "C": "2509042059",
+        "E": "TERMINAL D APRON: PARKING OF IL-76 TYPE ACFT PERMITTED ONTO\nACFT STANDS 23, 26, 27A, 29A, 31 AT PARKING POINT ,,C,,.\nWHEN IL-76 TYPE ACFT OCCUPY ACFT STANDS 27A AND 29A -\nACFT STANDS 27, 28 AND ACFT STANDS 29, 30 NOT AVBL ACCORDINGLY.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3692/25 NOTAMR A1142/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMNXX/IV/NBO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2505280550",
+        "C": "2508282059",
+        "E": "ACFT GND MOVEMENT CTL ON APN:\n- TERMINALS A, B, C (ACFT STAND 141 AND EASTWARD) PROVIDED BY\n,,SHEREMETYEVO-APRON 3,, ON FREQ 130.350MHZ,\n- TERMINALS C (ACFT STAND 142 AND WESTWARD) PROVIDED BY\n,,SHEREMETYEVO-APRON 4,, ON FREQ 134.550MHZ,\n- TERMINALS D, E, F, CARGO AREA OF TERMINAL PROVIDED BY\n,,SHEREMETYEVO-APRON 2,, ON FREQ 123.600MHZ.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3477/25 NOTAMR A0988/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2505191205",
+        "C": "2508192059",
+        "E": "APN OF TERMINAL C: ACFT STANDS 165, 166 AVBL FOR COMMERCIAL SER\nDRG DAYLIGHT HR.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3105/25 NOTAMR A0690/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2505051230",
+        "C": "2508052059",
+        "E": "DE-ICING AREA 1: PARKING OF ACFT IL-76 ON ACFT STAND 84 ON POINT B\nCARRIED OUT BY TOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A2728/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMRLC/IV/NBO/A/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2504221110",
+        "C": "2507222059",
+        "E": "RWY 06L/24R CLSD FOR ACFT ARR/DEP.\nAPPROACH CHART RWY06L/RWY24R DO NOT USE.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "G0285/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QGWAU/I/NBO/EA/000/999/5558N03722E150",
+        "A": "UUEE",
+        "B": "2506181000",
+        "C": "2509182059",
+        "E": "GBAS CH 22237 U/S, GLS PROC NOT PROVIDED.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.36666666666667
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0761/25 NOTAMN",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/E/000/999/5558N03725E005",
+        "A": "UUEE",
+        "B": "2506231300",
+        "C": "PERM",
+        "E": "01 MAR 2025 FLW CHARGE RATES ESTABLISHED IN AIRPORT:\n1. TKOF AND LDG CHARGE (INCLUDING INVESTMENT LEVY) - 16.96 USD\nPER 1 T MTOM,\n1.1 INVESTMENT LEVY - 5.95 USD PER 1 T MTOM,\n2. CHARGE FOR ENSURING AVIATION SECURITY (INSPECTION AND PASSPORT\nCONTROL NOT PROVIDED) - 1.40 USD PER 1 T MTOM,\n3. CHARGE FOR USING THE TERMINAL BUILDING:\n3.1 TERMINAL B - 20.32 USD PER 1 PASSENGER,\n3.2 TERMINAL C - 20.32 USD PER 1 PASSENGER,\n3.3 TERMINAL D - 20.32 USD PER 1 PASSENGER,\n3.4 TERMINAL E - 12.18 USD PER 1 PASSENGER,\n3.5 TERMINAL F - 12.18 USD PER 1 PASSENGER.\n4. PARKING CHARGE - 5.0 PCT OF TKOF AND LDG CHARGE (EXCLUDING\nINVESTMENT LEVY) PER 24 HR.\nREF AIP RUSSIA GEN 4.1-8.",
+        "circle": {
+            "center": {
+                "lat": 55.96666666666667,
+                "lon": 37.416666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A5345/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QCAXX/IV/B/A/000/999/5525N03755E025",
+        "A": "UUDD",
+        "B": "2508070000",
+        "C": "PERM",
+        "E": "REF: AIP PAGE AS 2.1 UUDD-10.1 CHART AD 2.18\nATS COMMUNICATION FACILITIES:\n- REMARKS: DOMODEDOVO-TOWER READ TEXT:\nWITHIN DOMODEDOVO-TOWER AREA OF RESPONSIBILITY GND-1200M/4000FT\nAMSL INSTEAD OF 900M/3000FT AMSL.\n- DOMODEDOVO-TOWER FREQ 118.600(119.450R) COLUMN 'REMARKS'\nREAD: RWY 13R/31L INSTEAD OF PUBLISHED.\n- MAKE A NEW ENTRY: DOMODEDOVO-TOWER FREQ 120.600 (119.450R)\nCOLUMN 'REMARKS': ADD TWY M, A1, A2, A4-A9, A11, A12.\n- NOTE BELOW THE CHART READ: DOMODEDOVO-TOWER GND-1200M/4000FT\nAMSL INSTED OF 900M/3000FT AMSL, FURTHER TEXT UNCHANGED.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A5279/25 NOTAMR A3595/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QPIXX/I/NBO/A/000/999/5525N03755E025",
+        "A": "UUDD",
+        "B": "2507151000",
+        "C": "2512312359",
+        "E": "- DVOR DMD 113.3MHZ INFO FOR NAVIGATION PURPOSES CORRECT AT DIST\nUP TO 120KM.\n- DME CH 80X INFO CORRECT AT DIST UP TO 42KM.\nRWY 13R AND RWY 31L: DVOR APCH NOT PROVIDED.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A4675/25 NOTAMR A3593/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMRLC/IV/NBO/A/000/999/5525N03755E003",
+        "A": "UUDD",
+        "B": "2506270830",
+        "C": "2509302359",
+        "E": "RWY 13C/31C CLSD.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 5556
+        },
+        "archive": false
+    },
+    {
+        "id": "A4475/25 NOTAMR A3641/25",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2506230650",
+        "C": "PERM",
+        "E": "1. AD MAG VAR ESTABLISHED AS FLW: +12 DEG (EAST)\nINSTEAD OF PUBLISHED  +11 DEG (EAST).\n2. RWY DESIGNATION (RWY NR) CHG:\n- RWY 13L: MAG BRG 134 DEG INSTEAD OF PUBLISHED\nRWY 14L, MAG BRG 135 DEG,\n- RWY 13C: MAG BRG 134 DEG INSTEAD OF PUBLISHED\nRWY 14C, MAG BRG 135 DEG,\n- RWY 13R: MAG BRG 134 DEG INSTEAD OF PUBLISHED\nRWY 14R, MAG BRG 135 DEG,\n- RWY 31L: MAG BRG 314 DEG INSTEAD OF PUBLISHED\nRWY 32L, MAG BRG 315 DEG,\n- RWY 31C: MAG BRG 314 DEG INSTEAD OF PUBLISHED\nRWY 32C, MAG BRG 315 DEG,\n- RWY 31R: MAG BRG 314 DEG INSTEAD OF PUBLISHED\nRWY 32R, MAG BRG 315 DEG.\nREF AIP OF RUSSIA PAGE AD 2.1 UUDD-1,2,5,6,7,10.1,10.2,11,11.1,\n11.2,11.4,11.5,11.6,11.7,11.9,12,13.5,13.6,13.7,13.8,14,15,16,\n31,31.1,31.2,33,33.1,34,34.1,35,35.1,37,39,39.1,41,55,57,97,98,\n99,101,102,103,105,106,107,135,139,140,141,142,143,144,145,146,\n147,148,149,150,151,153,154,155,156,157,158,159,160,161,162,163,\n164,165,166,167,169,170,171,173,174,175,203,205.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3596/25 NOTAMR A1475/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505231340",
+        "C": "2512312359",
+        "E": "ACFT STANDS 66, G15A, G2 AVBL FOR EMBRAER E-170/175/190/195,\nSSJ-100 ACFT AND SMALLER ACFT.\nACFT STANDS 45,46: TAX OUT UNDER OWN ENGINE POWER PERMITTED.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3594/25 NOTAMR A3390/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMAXX/IV/NBO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505231325",
+        "C": "2512312359",
+        "E": "FLW CLSD DUE TO REPAIR:\n- RWY 13L/31R,\n- TWY B1, B11.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3591/25 NOTAMR A2154/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMRLT/IV/NBO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505231318",
+        "C": "2512312359",
+        "E": "RWY 13R ACFT TKOF PERMITTED FROM TWY A2, A4 ONLY,\nRWY 31L ACFT TKOF PERMITTED FROM TWY A11, A9 ONLY.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3531/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505211300",
+        "C": "2512312359",
+        "E": "STAND 23 AVBL FOR B-737-500 ACFT: PARKING ACCORDING TO MARK B.\nACFT TAX INTO STAND UNDER OWN ENG PWR, ACFT TAX OUT OF STAND BY\nTOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3392/25 NOTAMR A8920/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMAXX/IV/NBO/A/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505151001",
+        "C": "2512312359",
+        "E": "- TAX RTE H4, 24 CLSD.\n- STANDS 81-97 CLSD.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A2820/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QACXX/IV/NBO/A/000/999/5525N03755E025",
+        "A": "UUDD",
+        "B": "2504250700",
+        "C": "PERM",
+        "E": "REF RUSSIA AIP AMDT 05/25 WEF 15 MAY 2025:\n1. PAGE AD 2.1 UUDD-157 STAR RNAV: HOLDING AREA ALBOR READ MNM\n2100'/(485) INSTEAD OF 2000'/(450),\n2. PAGE AD 2.1 UUDD-169 RNP Y RWY 14L: PLAN VEIW:\nSEGMENT DD071 - DD070 DELETE MNM 1300'/(235).",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "G0243/25 NOTAMR G0015/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QGWXX/IV/NBO/EA/000/999/5525N03755E005",
+        "A": "UUDD",
+        "B": "2505290720",
+        "C": "2512302359 EST",
+        "E": "EXPECT OPERATIONAL FAILURES IN GNSS.",
+        "circle": {
+            "center": {
+                "lat": 55.416666666666664,
+                "lon": 37.916666666666664
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A5216/25 NOTAMR A4321/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2507140631",
+        "C": "2507251100",
+        "E": "TWY M1 CLSD FOR ACFT TAX AND TOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A5091/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QSAXX/IV/BO/A/000/999/5536N03717E025",
+        "A": "UUWW",
+        "B": "2507091140",
+        "C": "2508312100",
+        "E": "D-ATIS MOSCOW/VNUKOVO OPR ON TEST,\nFLT CREWS SHALL NOT USE INFO FOR OPS.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A4819/25 NOTAMR A3726/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2507011503",
+        "C": "2508051700",
+        "E": "TWY C10 CLSD FOR ALL TYPE ACFT TAX/TOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4818/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2507011455",
+        "C": "2509302100",
+        "E": "TWY C1 CLSD FOR TAX AND TOW.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4766/25 NOTAMR A0750/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QPIXX/I/NBO/A/000/999/5536N03717E025",
+        "A": "UUWW",
+        "B": "2506300907",
+        "C": "2509302100",
+        "E": "1. AIP PAGE UUWW-105 (IAC NDB RWY 01), 107 (IAC NDB RWY 06),\nREAD: USE DME WNK AT DIST NOT MORE THAN 24.2 KM.\n2. AIP PAGE UUWW-106 (IAC NDB RWY 19),\nREAD: USE DME WNK AT DIST NOT MORE THAN 13.3 KM.\n3. AIP PAGE UUWW-108 (IAC NDB RWY 24),\nREAD: USE DME WNK AT DIST NOT MORE THAN 15.8 KM.\n4. AIP PAGE UUWW-13.3\nIN EVENT OF RADIO COMMUNICATION FAILURE DRG/AFTER MISSED APCH\nDRG RWY O1 AND RWY 06 NDB APCH IT IS REQUIRED TO PROCEED\nMAINTAINING FLIGHT RTE AND PROFILE OF MISSED APCH PROCEDURE\nTO KLIMOVSK NDB, THEN TURN RIGHT TO SKURYGINO NDB, ENTER\nSKURYGINO NDB HOLDING AREA.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A4763/25 NOTAMR A2920/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300840",
+        "C": "2509302100",
+        "E": "TAX/TOW PROHIBITED FOR INDEX 7 ACFT VIA:\n- TWY M2 FROM TWY A10 TO TWY A11,\n- TWY M3 FROM TWY A2 TO TWY A3,\n- TWY M4 FROM TWY B4 TO TWY B5.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4762/25 NOTAMR A1600/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QFPLC/IV/B/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300840",
+        "C": "2509302100",
+        "E": "HELIPAD ON TWY B8 CLSD.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4761/25 NOTAMR A9134/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMNXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300840",
+        "C": "2509302100",
+        "E": "VNUKOVO 1 APRON PROC FOR AN-124 AND BOEING 747-8 ACFT:\n- TAXIING OUT OF ACFT STAND 63 TO ENGINE START-UP POINT\nCARRIED OUT BY TOWING ONLY,\n- ENGINE START-UP CARRIED OUT ON START-UP POINTS 25, 26 ONLY.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4760/25 NOTAMR A9133/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300830",
+        "C": "2509302100",
+        "E": "ACFT HOLDING ON TWY A2 FOR PERMISSION TO COMMENCE LINE-UP PROC\nSHALL HOLD AT TEMPO INTERMEDIATE HOLDING PSN MARKING ON INT WITH\nTWY M3.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4759/25 NOTAMR A9132/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300830",
+        "C": "2509302100",
+        "E": "ACFT MODE S RESPONDER ON-GND OPERATION:\n- TURN-ON BEFORE TOWING (ENGINE START-UP)\n- TURN-OFF AFTER ACFT PARKING ON STAND.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4758/25 NOTAMR A9130/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXXX/IV/M/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300830",
+        "C": "2509302100",
+        "E": "TWY B6: ACFT TAX ONLY BY TOWING, EXC HEL.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4757/25 NOTAMR A9129/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPLC/IV/BO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300830",
+        "C": "2509302100",
+        "E": "VNUKOVO 1 APN: STANDS 67, 67A, 68, 68A, 69, 69A CLSD FOR ACFT\nPARKING.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4756/25 NOTAMR A9127/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QFPXX/IV/B/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300834",
+        "C": "2509302100",
+        "E": "HELIPADS ON TWY B8, A4, C11 PERMITTED FOR TKOF AND LDG OF STATE\nAVIATION HEL ONLY.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4755/25 NOTAMR A9126/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300830",
+        "C": "2509302100",
+        "E": "TWY C2, C3, C4, C5, C9 NIGHT MARKING NOT AVBL.\nFOLLOW-ME CAR ASSISTANCE DRG HR OF DARKNESS AND DAYLIGHT HR AT VIS\nBELOW 2000M COMPULSORY.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4754/25 NOTAMR A9125/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300800",
+        "C": "2509302100",
+        "E": "DUE TO RECONSTRUCTION AD AVBL AS ALTN FOR ACFT OF AIRLINES WHICH\nCONCLUDED GENERAL AGREEMENT ON RENDERING AIRPORT SERVICES.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4753/25 NOTAMR A9124/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300810",
+        "C": "2509302100",
+        "E": "RWY 24:\n- BOEING-767 AND BELOW CLASS ACFT TKOF MUST BE CARRIED OUT FROM\nTWY A3, A5,\n- BOEING-767 AND ABOVE CLASS ACFT TKOF MUST BE CARRIED OUT FROM\nTWY A2 DUE TO VNUKOVO 1 APRON RECONSTRUCTION AND LIMITATION ON\nEXIT ONTO TWY A2.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4751/25 NOTAMR A9123/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFAXX/IV/NBO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506300800",
+        "C": "2509302100",
+        "E": "STOP BAR LIGHTS U/S:\n- ON RWY 01/19 BFR RWY 06/24 INT,\n- ON TWY M2.\nWHEN RWY 01/19 IN USE AND RVR LESS THAN 350M ACFT TAXIING\nCARRIED OUT AFTER FOLLOW-ME CAR.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4634/25 NOTAMR A3134/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QMXLC/IV/M/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2506261435",
+        "C": "2509302100",
+        "E": "TWY B8 SEGMENT FROM APN VNUKOVO 2 TO TWY A8\nCLSD FOR ACFT TAX AND TOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A4633/25 NOTAMR A1648/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QNVAS/IV/BO/AE/000/999/5535N03715E025",
+        "A": "UUWW",
+        "B": "2506261430",
+        "C": "2509302100",
+        "E": "MOSCOW/VNUKOVO DVORDME WNK 113.7MHZ: DVOR U/S.\nFLW IAC SHALL NOT BE USED:\nIAC DVOR RWY 01 (AIP PAGE AD 2.1 UUWW-101),\nIAC DVOR RWY 19 (AIP PAGE AD 2.1 UUWW-102),\nIAC DVOR RWY 06 (AIP PAGE AD 2.1 UUWW-103),\nIAC DVOR RWY 24 (AIP PAGE AD 2.1 UUWW-104).",
+        "circle": {
+            "center": {
+                "lat": 55.583333333333336,
+                "lon": 37.25
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A4632/25 NOTAMR A1647/25",
+        "notamType": "restricted",
+        "Q": "UUWV/QCAXX/IV/B/EA/000/999/5536N03717E025",
+        "A": "UUWW",
+        "B": "2506261430",
+        "C": "2509302100",
+        "E": "VNUKOVO-TOWER-1 OPR ON FREQ 119.450MHZ INSTEAD OF PUBLISHED\nFREQ 122.3MHZ.\nREF AIP AD 2.1 UUWW-10.3.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A9135/24 NOTAMR A4767/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QMPXX/IV/BO/A/000/999/5536N03717E005",
+        "A": "UUWW",
+        "B": "2412280825",
+        "C": "2606302100",
+        "E": "VNUKOVO APRON 1:\n1. ACFT STAND 32E RENAMED TO ACFT STAND 32A ,\nACFT STAND 32D RENAMED TO ACFT STAND 32B,\nACFT STAND 33A RENAMED TO ACFT STAND 33,\nACFT STAND 34B RENAMED TO ACFT STAND 34,\nACFT STAND 35A RENAMED TO ACFT STAND 35,\nACFT STAND 39C RENAMED TO ACFT STAND 39A.\n2. FLW ACFT STANDS CLSD: 4(A,B), 5(A,B), 14(A,B), 15(A,B), 18A,\n40(A,B), 65(A,B).\n3. ACFT STAND 57A (553555.29N 0371657.89E) PUT INTO OPR,\nACFT TAX INTO STAND CARRIED OUT UNDER OWN ENGINES POWER,\nACFT TAX OUT STANDS - BY TOWING.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "G0317/25 NOTAMR G0506/24",
+        "notamType": "restricted",
+        "Q": "UUWV/QGWXX/IV/NBO/EA/000/999/5536N03717E025",
+        "A": "UUWW",
+        "B": "2506300840",
+        "C": "2509302100",
+        "E": "GPS SIGNAL INTERRUPTION POSS.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "G0316/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QGWAU/I/NBO/EA/000/999/5535N03716E150",
+        "A": "UUWW",
+        "B": "2506302100",
+        "C": "2509302100",
+        "E": "GBAS CH 20431/20842, 21253/21664, 22075 PROC NOT PROVIDED\nRNAV(GNSS), SID/STAR RNAV(GNSS), GLS.\n(AIP PAGE AD 2.1 UUWW-161,162,163,164).",
+        "circle": {
+            "center": {
+                "lat": 55.583333333333336,
+                "lon": 37.266666666666666
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "A5427/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QSAAS/IV/BO/A/000/999/4617N04800E025",
+        "A": "URWA",
+        "B": "2507201530",
+        "C": "2508180400",
+        "D": "DAILY 1530-0400",
+        "E": "ATIS CALL-SIGN ASTRAKHAN-ATIS FREQ 131.500MHZ RUS,\nASTRAKHAN-ATIS FREQ 125.625MHZ ENG U/S.\nTO RECEIVE METEO, ORNITHOLOGICAL AND AERONAUTICAL INFO CREWS\nSHALL CONTACT:\n- FOR DEP FM CONTROL OFFICER OF ASTRAKHAN-TOWER ON FREQ 118.6MHZ,\n- FOR ARR FM CONTROL OFFICER OF ASTRAKHAN-APPROACH ON FREQ 126.0MHZ",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A3738/25 NOTAMR A1175/25",
+        "notamType": "restricted",
+        "Q": "URRV/QMRXX/IV/NBO/A/000/999/4617N04800E005",
+        "A": "URWA",
+        "B": "2505290520",
+        "C": "2508291200 EST",
+        "E": "RWY 09/27: U-TURN OF ALL ACFT TYPES (EXC HEL) ON SEGMENT FROM\nTWY A TO THR 09 SHALL BE PERFORMED BY TOWING ONLY.\nRWY 09: IN LOW VIS COND, TKOF TO BE CARRIED OUT FROM TWY A ONLY.",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A3584/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QMBCH/IV/BO/A/000/999/4617N04800E005",
+        "A": "URWA",
+        "B": "2505241000",
+        "C": "PERM",
+        "E": "PCN ESTABLISHED:\n- RWY 09/27:               40/F/C/X/T\n- TWY A:                    43/R/B/X/T, MIXED\n- TWY B:                    48/R/B/X/T, MIXED\n- TWY C:                    45/R/B/X/T, MIXED\n- TWY D:                    40/F/C/X/T\n- APRON 1\n(STANDS 1A, 1-4, 8-12):   48/R/B/X/T, MIXED\n- APRON 2\n(STANDS 5-7, 13-22):         62/F/C/W/T\n- APRON OF GOVERNMENT ACFT\n(STANDS 01, 02):   49/F/C/X/T.\nSURFACE OF RWY, TWY AND APRONS WO CHANGES.\nREF AIP RUSSIA PAGE AD 2.1 URWA-3, 5, 31, 39.",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "A2746/25 NOTAMR A0414/25",
+        "notamType": "restricted",
+        "Q": "URRV/QMXLT/IV/M/A/000/999/4617N04800E002",
+        "A": "URWA",
+        "B": "2504230345",
+        "C": "2507231200 EST",
+        "E": "TWY D SEGMENT FROM TWY C TO THR 27 CLSD.",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 3704
+        },
+        "archive": false
+    },
+    {
+        "id": "G0236/25 NOTAMR G0150/25",
+        "notamType": "restricted",
+        "Q": "URRV/QGWAU/I/NBO/EA/000/999/4617N04800E150",
+        "A": "URWA",
+        "B": "2505270940",
+        "C": "2508271200 EST",
+        "E": "GNSS OPERATION WI AD AREA UNRELIABLE.\nVECTORING WILL BE PROVIDED BY ACFT CREW REQUEST.",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "A2770/25 NOTAMR A8896/24",
+        "notamType": "airport",
+        "Q": "UUWV/QFALC/IV/NBO/A/000/999/5313N03411E005",
+        "A": "UUBP",
+        "B": "2504230930",
+        "C": "2508312359",
+        "E": "AD CLSD DUE TO REPAIR.",
+        "circle": {
+            "center": {
+                "lat": 53.21666666666667,
+                "lon": 34.18333333333333
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "N2501/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4527N04220E022",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR587.\nACFT FLT SHALL BE CARRIED OUT ONLY WI PERIOD OF INACTIVITY OF\nANTIHAIL FIRING WITH PERMISSION BY ROSTOV ATS AND MAINTAINING\nCONTINUOUS RADIO COM WITH ROSTOV ATS UNIT. FLT RULES IN CLASS G\nAIRSPACE NOT APPLIED.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 45.45,
+                "lon": 42.333333333333336
+            },
+            "radius": 40744
+        },
+        "archive": false
+    },
+    {
+        "id": "N2500/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4518N04118E023",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR579.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 45.3,
+                "lon": 41.3
+            },
+            "radius": 42596
+        },
+        "archive": false
+    },
+    {
+        "id": "N2499/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4459N04138E017",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR568.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 44.983333333333334,
+                "lon": 41.63333333333333
+            },
+            "radius": 31484
+        },
+        "archive": false
+    },
+    {
+        "id": "N2498/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4439N04225E013",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR567.\nACFT FLT SHALL BE CARRIED OUT ONLY WI PERIOD OF INACTIVITY OF\nANTIHAIL FIRING WITH PERMISSION BY ROSTOV ATS AND MAINTAINING\nCONTINUOUS RADIO COM WITH ROSTOV ATS UNIT. FLT RULES IN CLASS G\nAIRSPACE NOT APPLIED.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 44.65,
+                "lon": 42.416666666666664
+            },
+            "radius": 24076
+        },
+        "archive": false
+    },
+    {
+        "id": "N2497/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4426N04217E024",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR566.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 44.43333333333333,
+                "lon": 42.28333333333333
+            },
+            "radius": 44448
+        },
+        "archive": false
+    },
+    {
+        "id": "N2496/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4440N04149E024",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR565.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 44.666666666666664,
+                "lon": 41.81666666666667
+            },
+            "radius": 44448
+        },
+        "archive": false
+    },
+    {
+        "id": "N2495/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4407N04235E017",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR564.\nACFT FLT SHALL BE CARRIED OUT ONLY WI PERIOD OF INACTIVITY OF\nANTIHAIL FIRING WITH PERMISSION BY ROSTOV ATS AND MAINTAINING\nCONTINUOUS RADIO COM WITH ROSTOV ATS UNIT. FLT RULES IN CLASS G\nAIRSPACE NOT APPLIED.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 44.11666666666667,
+                "lon": 42.583333333333336
+            },
+            "radius": 31484
+        },
+        "archive": false
+    },
+    {
+        "id": "N2494/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QRRCA/IV/BO/W/000/290/4508N04155E025",
+        "A": "URRV",
+        "B": "2504210000",
+        "C": "2510302359",
+        "E": "RESTRICTED AREA ACT: URR563.",
+        "F": "GND",
+        "G": "FL290",
+        "circle": {
+            "center": {
+                "lat": 45.13333333333333,
+                "lon": 41.916666666666664
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "U0911/25 NOTAMN",
+        "notamType": "danger",
+        "Q": "UUXX/QRTCA/IV/BO/W/000/999/4704N03612E573",
+        "A": "URRV URFV UUWV",
+        "B": "2507200045",
+        "C": "2507260045",
+        "E": "TEMPO DANGER AREA ACT:\n434800N0392400E-433000N0303500E-441500N0302500E-450900N0295900E-\n452500N0293400E-451300N0284400E-453000N0283100E-462300N0290700E-\n462500N0300700E-480000N0290900E-482700N0274300E-482500N0264800E-\n474800N0250000E-480300N0225900E-482500N0220900E-490200N0225100E-\n493300N0224400E-502500N0240400E-513200N0233600E-515632N0233808E-\n515930N0240805E-523414N0262109E-521639N0314019E-521942N0313455E-\n522933N0313734E-523104N0313327E-523344N0314029E-523547N0313402E-\n524136N0313000E-524404N0313534E-524738N0313513E-530204N0311436E-\n530553N0312321E-531243N0312407E-531137N0313440E-531352N0313742E-\n530605N0315511E-530616N0321410E-531237N0322650E-531813N0322918E-\n531957N0324401E-532729N0324526E-533254N0322824E-533904N0322440E-\n534126N0323000E-534349N0322732E-534307N0322156E-534851N0320748E-\n534747N0314614E-540332N0315318E-541439N0311904E-542400N0311600E-\n543700N0351500E-540330N0352000E-541400N0373600E-524400N0412200E-\n484700N0435700E-474400N0433900E-475000N0465300E-461300N0474300E-\n440700N0491000E-453800N0412200E-434800N0392400E.",
+        "F": "SFC",
+        "G": "UNL",
+        "areaPolygon": [
+            {
+                "lat": 43.8,
+                "lon": 39.4
+            },
+            {
+                "lat": 43.5,
+                "lon": 30.583333333333332
+            },
+            {
+                "lat": 44.25,
+                "lon": 30.416666666666668
+            },
+            {
+                "lat": 45.15,
+                "lon": 29.983333333333334
+            },
+            {
+                "lat": 45.416666666666664,
+                "lon": 29.566666666666666
+            },
+            {
+                "lat": 45.21666666666667,
+                "lon": 28.733333333333334
+            },
+            {
+                "lat": 45.5,
+                "lon": 28.516666666666666
+            },
+            {
+                "lat": 46.38333333333333,
+                "lon": 29.116666666666667
+            },
+            {
+                "lat": 46.416666666666664,
+                "lon": 30.116666666666667
+            },
+            {
+                "lat": 48,
+                "lon": 29.15
+            },
+            {
+                "lat": 48.45,
+                "lon": 27.716666666666665
+            },
+            {
+                "lat": 48.416666666666664,
+                "lon": 26.8
+            },
+            {
+                "lat": 47.8,
+                "lon": 25
+            },
+            {
+                "lat": 48.05,
+                "lon": 22.983333333333334
+            },
+            {
+                "lat": 48.416666666666664,
+                "lon": 22.15
+            },
+            {
+                "lat": 49.03333333333333,
+                "lon": 22.85
+            },
+            {
+                "lat": 49.55,
+                "lon": 22.733333333333334
+            },
+            {
+                "lat": 50.416666666666664,
+                "lon": 24.066666666666666
+            },
+            {
+                "lat": 51.53333333333333,
+                "lon": 23.6
+            },
+            {
+                "lat": 51.94222222222222,
+                "lon": 23.635555555555555
+            },
+            {
+                "lat": 51.99166666666667,
+                "lon": 24.134722222222223
+            },
+            {
+                "lat": 52.57055555555556,
+                "lon": 26.352500000000003
+            },
+            {
+                "lat": 52.277499999999996,
+                "lon": 31.671944444444446
+            },
+            {
+                "lat": 52.32833333333333,
+                "lon": 31.581944444444446
+            },
+            {
+                "lat": 52.4925,
+                "lon": 31.62611111111111
+            },
+            {
+                "lat": 52.51777777777777,
+                "lon": 31.5575
+            },
+            {
+                "lat": 52.56222222222222,
+                "lon": 31.674722222222222
+            },
+            {
+                "lat": 52.59638888888889,
+                "lon": 31.56722222222222
+            },
+            {
+                "lat": 52.69333333333333,
+                "lon": 31.5
+            },
+            {
+                "lat": 52.73444444444444,
+                "lon": 31.592777777777776
+            },
+            {
+                "lat": 52.79388888888889,
+                "lon": 31.586944444444445
+            },
+            {
+                "lat": 53.03444444444444,
+                "lon": 31.243333333333336
+            },
+            {
+                "lat": 53.09805555555556,
+                "lon": 31.389166666666664
+            },
+            {
+                "lat": 53.21194444444445,
+                "lon": 31.401944444444442
+            },
+            {
+                "lat": 53.19361111111111,
+                "lon": 31.57777777777778
+            },
+            {
+                "lat": 53.23111111111111,
+                "lon": 31.628333333333334
+            },
+            {
+                "lat": 53.10138888888889,
+                "lon": 31.919722222222223
+            },
+            {
+                "lat": 53.10444444444445,
+                "lon": 32.236111111111114
+            },
+            {
+                "lat": 53.21027777777778,
+                "lon": 32.447222222222216
+            },
+            {
+                "lat": 53.30361111111111,
+                "lon": 32.48833333333334
+            },
+            {
+                "lat": 53.3325,
+                "lon": 32.73361111111111
+            },
+            {
+                "lat": 53.45805555555556,
+                "lon": 32.757222222222225
+            },
+            {
+                "lat": 53.54833333333333,
+                "lon": 32.473333333333336
+            },
+            {
+                "lat": 53.651111111111106,
+                "lon": 32.41111111111111
+            },
+            {
+                "lat": 53.690555555555555,
+                "lon": 32.5
+            },
+            {
+                "lat": 53.73027777777778,
+                "lon": 32.45888888888889
+            },
+            {
+                "lat": 53.718611111111116,
+                "lon": 32.36555555555556
+            },
+            {
+                "lat": 53.814166666666665,
+                "lon": 32.13
+            },
+            {
+                "lat": 53.796388888888885,
+                "lon": 31.770555555555553
+            },
+            {
+                "lat": 54.05888888888889,
+                "lon": 31.888333333333332
+            },
+            {
+                "lat": 54.244166666666665,
+                "lon": 31.317777777777778
+            },
+            {
+                "lat": 54.4,
+                "lon": 31.266666666666666
+            },
+            {
+                "lat": 54.61666666666667,
+                "lon": 35.25
+            },
+            {
+                "lat": 54.05833333333333,
+                "lon": 35.333333333333336
+            },
+            {
+                "lat": 54.233333333333334,
+                "lon": 37.6
+            },
+            {
+                "lat": 52.733333333333334,
+                "lon": 41.36666666666667
+            },
+            {
+                "lat": 48.78333333333333,
+                "lon": 43.95
+            },
+            {
+                "lat": 47.733333333333334,
+                "lon": 43.65
+            },
+            {
+                "lat": 47.833333333333336,
+                "lon": 46.88333333333333
+            },
+            {
+                "lat": 46.21666666666667,
+                "lon": 47.71666666666667
+            },
+            {
+                "lat": 44.11666666666667,
+                "lon": 49.166666666666664
+            },
+            {
+                "lat": 45.63333333333333,
+                "lon": 41.36666666666667
+            },
+            {
+                "lat": 43.8,
+                "lon": 39.4
+            }
+        ],
+        "archive": false
+    },
+    {
+        "id": "U0907/25 NOTAMR U0464/25",
+        "notamType": "restricted",
+        "Q": "URRV/QNMXX/IV/BO/E/000/999/4506N04207E150",
+        "A": "URRV",
+        "B": "2507170720",
+        "C": "2510211200 EST",
+        "E": "STAVROPOL/SHPAKOVSKOYE VORDME STW 114.90 MHZ:\n- VOR AVBL UPTO DIST 20KM,\n- DME AVBL UPTO DIST 134KM.",
+        "circle": {
+            "center": {
+                "lat": 45.1,
+                "lon": 42.11666666666667
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0897/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNMXX/IV/BO/E/000/999/4434N03800E150",
+        "A": "URRV",
+        "B": "2507150515",
+        "C": "2510152359",
+        "E": "GELENDZHIK DVORDME GNV 114.300MHZ:\n- DVOR OPR AT DIST UP TO 148KM,\n- DME OPR AT DIST UP TO 64KM.",
+        "circle": {
+            "center": {
+                "lat": 44.56666666666667,
+                "lon": 38
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0896/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNMXX/IV/BO/E/000/999/4716N03936E150",
+        "A": "URRV",
+        "B": "2507150700",
+        "C": "2510142359 EST",
+        "E": "ELISTA VORDME ELI 117.65 MHZ:\n- DME PROVIDES OPERATING PERFORMANCE UP TO DISTANCE 142 KM.\n- VOR OPR WO LIMITATION.",
+        "circle": {
+            "center": {
+                "lat": 47.266666666666666,
+                "lon": 39.6
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0879/25 NOTAMR U0876/25",
+        "notamType": "restricted",
+        "Q": "URRV/QARCS/IV/NBO/E/000/999/4600N04300E200",
+        "A": "URRV PART 3 OF 3",
+        "B": "2507110000",
+        "C": "2510012359",
+        "E": "9. ARR TFC TO URWI AD SHOULD ONLY USE FLT RTE:\n- IPLED DCT GOTIK DCT MEMZA (IPLED TO MEMZA CRUISING LVLS EVEN,\nBTN FL180-530) A962 OKARU N82 UMSUR (NIRGA TO UMSUR CRUISING\nLVLS EVEN, BTN FL160-430) A964 KISEL (UMSUR TO KISEL TFC\nUNIDIRECTIONAL, CRUISING LVLS EVEN, FL060-300).\n10. DEP TFC FROM URWI AD SHOULD ONLY USE FLT RTE:\n- SOREG G481 NIRGA (SOREG TO NIRGA CRUISING LVLS ODD,\nBTN FL150-390) DCT BEMES (NIRGA TO BEMES CRUISING LVLS ODD,\nBTN FL250-530) DCT ITAKA (BEMES TO ITAKA CRUISING LVLS ODD, BTN FL290-530).\n11. ARR TFC TO URKG AD SHOULD ONLY USE FLT RTE:\n- IPLED DCT GOTIK DCT MEMZA DCT VENFO DCT PROZR (IPLED TO PROZR\nCRUISING LVLS EVEN, BTN FL240-400) DCT BAKRI (PROZR TO BAKRI\nCRUISING LVLS EVEN, BTN FL100-400) A277 LIMAS (BAKRI TO LIMAS\nCRUISING LVLS EVEN, BTN FL070-150).\n12. DEP TFC FROM URKG AD SHOULD ONLY USE FLT RTE:\n- KUTON DCT LAZAREVSKOE NDB (LA) (KUTON TO LAZAREVSKOE NDB (LA)\nCRUISING LVLS ODD, BTN FL070-350) B549 IRGID (LAZAREVSKOE NDB\n(LA) TO IRGID CRUISING LVLS ODD, BTN FL140-400) A944 GUBOR G487\nERSAR DCT BEMES DCT ITAKA (ERSAR TO ITAKA CRUISING LVLS ODD,\nBTN FL290-530).\nTKOF/LDG AT URKG SHOULD BE PERFORMED ACCORDING TO CHARTS\nPUBLISHED IN AERONAUTICAL INFORMATION DOCUMENTS.",
+        "circle": {
+            "center": {
+                "lat": 46,
+                "lon": 43
+            },
+            "radius": 370400
+        },
+        "archive": false
+    },
+    {
+        "id": "U0873/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4354N03920E150",
+        "A": "URRV",
+        "B": "2507120000",
+        "C": "2510112359 EST",
+        "E": "LAZAREVSKOYE DME LAZ 117.4MHZ/CH121X SHALL NOT BE USED DUE TO LACK\nOF FLTCK.",
+        "circle": {
+            "center": {
+                "lat": 43.9,
+                "lon": 39.333333333333336
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0871/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4408N03901E150",
+        "A": "URRV",
+        "B": "2507120000",
+        "C": "2510112359 EST",
+        "E": "AGOY DME AGO 116.80MHZ/CH115X U/S DUE TO FLTCK EXPIRATION.",
+        "circle": {
+            "center": {
+                "lat": 44.13333333333333,
+                "lon": 39.016666666666666
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0866/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUXX/QARXX/IV/NBO/E/000/999/4700N04400E300",
+        "A": "URRV UWWW PART 3 OF 3",
+        "B": "2507100530",
+        "C": "2510012359",
+        "E": "VOLGOGRAD/GUMRAK VORDME (WGD) TFC UNIDIRECTIONAL, CRUISING LVL\nODD BTN FL090-530)-G481 OBABI-DCT VUVNE-DCT GEKPA (FROM OBABI TO\nGEKPA TFC UNIDIRECTIONAL, CRUISING LVL ODD BTN FL210-530).\n- KUTON-DCT LAZAREVSKOE NDB (LA) (FROM KUTON TO LAZAREVSKOE NDB\n(LA) CRUISING LVL ODD BTN FL070-350)-B549 IRGID (LAZAREVSKOE NDB\n(LA) TO IRGID CRUISING LVL ODD BTN FL140-400)-A944 GUBOR G487\nERSAR-DCT BEMES-DCT VULFI-DCT TUVGI (FROM ERSAR TO TUVGI CRUISING\nLVL ODD BTN FL290-530)-DCT EVZUN-DCT ZIZAR-DCT VAZLU-DCT UZZID\n(FROM TUVGI TO UZZID TFC UNIDIRECTIONAL, CRUISING LVL ODD BTN\nFL330-530)-DCT NOKLI-N72 TUSAB (FROM UZZID TO TUSAB TFC\nUNIDIRECTIONAL, CRUISING LVL ODD BTN FL090-530)-R807 UROBO-P135\nABNOT (FROM TUSAB TO ABNOT TFC UNIDIRECTIONAL, CRUISING LVL ODD\nBTN FL070-530).\n3. TKOF AND LDG FROM/TO URKG AD CARRIED OUT ACCORDING TO CHARTS\nPUBLISHED IN AIR NAVIGATION DOCUMENTS.",
+        "circle": {
+            "center": {
+                "lat": 47,
+                "lon": 44
+            },
+            "radius": 555600
+        },
+        "archive": false
+    },
+    {
+        "id": "U0790/25 NOTAMR U0436/25",
+        "notamType": "restricted",
+        "Q": "URRV/QNMLS/IV/BO/E/000/999/4716N03936E150",
+        "A": "URRV",
+        "B": "2506271030",
+        "C": "2509272359 EST",
+        "E": "DVORDME ADL 112.7MHZ: DVOR INFO SHALL NOT BE USED.\nDME PROVIDES OPR PERFORMANCE UP TO 72 KM.",
+        "circle": {
+            "center": {
+                "lat": 47.266666666666666,
+                "lon": 39.6
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0777/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4824N04517E150",
+        "A": "URRV",
+        "B": "2507050000",
+        "C": "2510042359 EST",
+        "E": "SOLODNIKI DME SLK 116.9 MHZ CH116X U/S DUE TO ABSENCE OF FLIGHT\nCHECK.",
+        "circle": {
+            "center": {
+                "lat": 48.4,
+                "lon": 45.28333333333333
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0776/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/5003N04522E150",
+        "A": "URRV",
+        "B": "2507050000",
+        "C": "2510042359 EST",
+        "E": "DME KAMYSHIN KMN 114.50 MHZ CH92X U/S DUE TO LACK OF FLTCK.",
+        "circle": {
+            "center": {
+                "lat": 50.05,
+                "lon": 45.36666666666667
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0752/25 NOTAMR U0749/25",
+        "notamType": "restricted",
+        "Q": "URRV/QNMAS/IV/BO/E/000/999/4820N04148E150",
+        "A": "URRV",
+        "B": "2506201040",
+        "C": "2509252359",
+        "E": "MOROZOVSK VORDME MOR 113.4MHZ U/S DUE TO FLTCK EXPIRY.",
+        "circle": {
+            "center": {
+                "lat": 48.333333333333336,
+                "lon": 41.8
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0751/25 NOTAMR U0290/25",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4551N04005E150",
+        "A": "URRV",
+        "B": "2506201040",
+        "C": "2509272359 EST",
+        "E": "TIKHORETSK DME TRK 113.00MHZ CH77X U/S DUE TO FLTCK EXPIRY.",
+        "circle": {
+            "center": {
+                "lat": 45.85,
+                "lon": 40.083333333333336
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0750/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4437N04006E150",
+        "A": "URRV",
+        "B": "2506270000",
+        "C": "2509272359 EST",
+        "E": "MAYKOP DME MKP 113.90 MHZ/CH86X U/S DUE TO FLTCK MISSING.",
+        "circle": {
+            "center": {
+                "lat": 44.61666666666667,
+                "lon": 40.1
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0727/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNMAS/IV/BO/E/000/999/4312N04438E150",
+        "A": "URRV",
+        "B": "2506190000",
+        "C": "2509192359 EST",
+        "E": "VLADIKAVKAZ/BESLAN DVORDME WLK 115.6MHZ NOT USABLE DUE TO FLTCK\nEXPIRY.",
+        "circle": {
+            "center": {
+                "lat": 43.2,
+                "lon": 44.63333333333333
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0725/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4939N04142E150",
+        "A": "URRV",
+        "B": "2506150500",
+        "C": "2509130500",
+        "E": "DME VESHENSKAYA WNK 116.70MHZ/CH114X U/S DUE FLTCK EXPIRY.",
+        "circle": {
+            "center": {
+                "lat": 49.65,
+                "lon": 41.7
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "U0723/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QNDAS/IV/BO/E/000/999/4407N04128E150",
+        "A": "URRV",
+        "B": "2506240000",
+        "C": "2509232359",
+        "E": "PEREDOVAYA DME PRD 115.1 MHZ U/S DUE FLTCK EXPIRY.",
+        "circle": {
+            "center": {
+                "lat": 44.11666666666667,
+                "lon": 41.46666666666667
+            },
+            "radius": 277800
+        },
+        "archive": false
+    },
+    {
+        "id": "A0036/25 NOTAMR A0013/25",
+        "notamType": "navigation",
+        "Q": "UKBV/QNAAS/IV/NBO/AE/000/999/5024N03027E025",
+        "A": "UKKK",
+        "B": "2506131115",
+        "C": "2509122359 EST",
+        "E": "RADIONAVIGATION AIDS OUT OF SERVICE.\nPERIODIC FLIGHT CHECKS NOT PERFORMED.\nREF AIP UKKK AD 2.19.",
+        "circle": {
+            "center": {
+                "lat": 50.4,
+                "lon": 30.45
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "A5449/25 NOTAMN",
+        "notamType": "airport",
+        "Q": "UUWV/QFAAH/IV/NBO/A/000/999/5149N03914E005",
+        "A": "UUOO",
+        "B": "2507210600",
+        "C": "2507212230",
+        "E": "AD OPR HR EXTD TIL 2230 ONLY FOR HEL FLT.",
+        "circle": {
+            "center": {
+                "lat": 51.81666666666667,
+                "lon": 39.233333333333334
+            },
+            "radius": 9260
+        },
+        "archive": false
+    },
+    {
+        "id": "W0818/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QAELC/IV/NBO/E/000/175/5536N03717E020",
+        "A": "UUWW PART 2 OF 2",
+        "B": "2507201855",
+        "C": "2507201955",
+        "E": "553400N 0373653E-552913N 0372839E-552604N 0373807E-\n553400N 0373653E\nABOVE FL145-FL165.\n554407N 0365730E-554350N 0371155E-553543N 0365951E-\n553715N 0364830E-554407N 0365730E\nABOVE FL145-FL175.",
+        "F": "GND",
+        "G": "FL175",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 37040
+        },
+        "archive": true
+    },
+    {
+        "id": "W0800/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QAELC/IV/NBO/E/000/175/5536N03717E025",
+        "A": "UUWW PART 1 OF 2",
+        "B": "2507201840",
+        "C": "2507201940",
+        "E": "EXPECT CLOSURE OF MOSCOW/VNUKOVO AD AIRSPACE FOR 20 MIN WI AREA:\n554136N 0372500E-554100N 0372518E-553936N 0372618E-\n553648N 0372942E-553612N 0373012E-553548N 0373042E-\n553536N 0373124E-553436N 0373600E-553430N 0373712E-\n553400N 0373653E-552604N 0373807E-551627N 0373940E-\n551309N 0373918E-551300N 0372153E-552019N 0370306E-\n553715N 0364830E-554245N 0364838E-554407N 0365730E-\n554350N 0371155E-554339N 0372120E-554336N 0372300E-\n554230N 0372342E-554136N 0372500E\nGND-450M (1500 FT) AMSL.\n554336N 0372300E-554412N 0373357E-553400N 0373653E-\n552604N 0373807E-551627N 0373940E-551309N 0373918E-\n550918N 0373858E-550809N 0373853E-550313N 0373820E-\n545612N 0373734E-545514N 0372052E-545440N 0371122E-\n551743N 0362250E-553715N 0364830E-554407N 0365730E-\n554350N 0371155E-554339N 0372120E-554336N 0372300E\nABOVE 450M (1500 FT) AMSL-FL125.\n554407N 0365730E-554350N 0371155E-553707N 0372123E-\n554412N 0373357E-553400N 0373653E-552604N 0373807E-\n551627N 0373940E-551309N 0373918E-550922N 0372735E-\n550313N 0373820E-545612N 0373734E-545514N 0372052E-\n545440N 0371122E-551743N 0362250E-553715N 0364830E-\n554407N 0365730E\nABOVE FL125-FL145.",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": true
+    },
+    {
+        "id": "W0800/25NOTAMN",
+        "notamType": "restricted",
+        "Q": "UUWV/QAELC/IV/NBO/E/000/175/5536N03717E025",
+        "A": "UUWW PART 2 OF 2",
+        "B": "2507201840",
+        "C": "2507201940",
+        "E": "553400N 0373653E-552913N 0372839E-552604N 0373807E-\n553400N 0373653E\nABOVE FL145-FL165.\n554407N 0365730E-554350N 0371155E-553543N 0365951E-\n553715N 0364830E-554407N 0365730E\nABOVE FL145-FL175.",
+        "F": "GND",
+        "G": "FL175",
+        "circle": {
+            "center": {
+                "lat": 55.6,
+                "lon": 37.28333333333333
+            },
+            "radius": 46300
+        },
+        "archive": true
+    },
+    {
+        "id": "A5364/25 NOTAMN",
+        "notamType": "restricted",
+        "Q": "URRV/QSAAS/IV/BO/A/000/999/4617N04800E025",
+        "A": "URWA",
+        "B": "2507181530",
+        "C": "2508180400",
+        "E": "ATIS ASTRAKHAN-ATIS FREQ 131.500MHZ RUSSIAN, 125.625MHZ\nENGLISH U/S.\nCREW SHALL RECEIVE METEO, ORNITHOLOGICAL AND AERONAUTICAL\nINFORMATION:\n- WHEN ACFT DEP - FROM CONTROL OFFICER OF ASTRAKHAN-TOWER ON\nFREQ 118.6MHZ,\n- WHEN ACFT ARR - FROM CONTROL OFFICER OF ASTRAKHAN-APPROACH\nON FREQ 126.0MHZ.",
+        "circle": {
+            "center": {
+                "lat": 46.28333333333333,
+                "lon": 48
+            },
+            "radius": 46300
+        },
+        "archive": false
+    },
+    {
+        "id": "U0877/25 NOTAMN",
+        "notamType": "danger",
+        "Q": "UUXX/QRTCA/IV/BO/W/000/999/4849N04126E560",
+        "A": "URRV URFV UUWV",
+        "B": "2507140045",
+        "C": "2507200045",
+        "E": "TEMPO DANGER AREA ACT:\n434800N0392400E-433000N0303500E-441500N0302500E-450900N0295900E-\n452500N0293400E-451300N0284400E-453000N0283100E-462300N0290700E-\n462500N0300700E-480000N0290900E-482700N0274300E-482500N0264800E-\n474800N0250000E-480300N0225900E-482500N0220900E-490200N0225100E-\n493300N0224400E-502500N0240400E-513200N0233600E-515632N0233808E-\n515930N0240805E-523414N0262109E-521639N0314019E-521942N0313455E-\n522933N0313734E-523104N0313327E-523344N0314029E-523547N0313402E-\n524136N0313000E-524404N0313534E-524738N0313513E-530204N0311436E-\n530553N0312321E-531243N0312407E-531137N0313440E-531352N0313742E-\n530605N0315511E-530616N0321410E-531237N0322650E-531813N0322918E-\n531957N0324401E-532729N0324526E-533254N0322824E-533904N0322440E-\n534126N0323000E-534349N0322732E-534307N0322156E-534851N0320748E-\n534747N0314614E-540332N0315318E-541439N0311904E-542400N0311600E-\n543700N0351500E-540330N0352000E-541400N0373600E-524400N0412200E-\n484700N0435700E-474400N0433900E-475000N0465300E-461300N0474300E-\n440700N0491000E-453800N0412200E-434800N0392400E.",
+        "F": "SFC",
+        "G": "UNL",
+        "areaPolygon": [
+            {
+                "lat": 43.8,
+                "lon": 39.4
+            },
+            {
+                "lat": 43.5,
+                "lon": 30.583333333333332
+            },
+            {
+                "lat": 44.25,
+                "lon": 30.416666666666668
+            },
+            {
+                "lat": 45.15,
+                "lon": 29.983333333333334
+            },
+            {
+                "lat": 45.416666666666664,
+                "lon": 29.566666666666666
+            },
+            {
+                "lat": 45.21666666666667,
+                "lon": 28.733333333333334
+            },
+            {
+                "lat": 45.5,
+                "lon": 28.516666666666666
+            },
+            {
+                "lat": 46.38333333333333,
+                "lon": 29.116666666666667
+            },
+            {
+                "lat": 46.416666666666664,
+                "lon": 30.116666666666667
+            },
+            {
+                "lat": 48,
+                "lon": 29.15
+            },
+            {
+                "lat": 48.45,
+                "lon": 27.716666666666665
+            },
+            {
+                "lat": 48.416666666666664,
+                "lon": 26.8
+            },
+            {
+                "lat": 47.8,
+                "lon": 25
+            },
+            {
+                "lat": 48.05,
+                "lon": 22.983333333333334
+            },
+            {
+                "lat": 48.416666666666664,
+                "lon": 22.15
+            },
+            {
+                "lat": 49.03333333333333,
+                "lon": 22.85
+            },
+            {
+                "lat": 49.55,
+                "lon": 22.733333333333334
+            },
+            {
+                "lat": 50.416666666666664,
+                "lon": 24.066666666666666
+            },
+            {
+                "lat": 51.53333333333333,
+                "lon": 23.6
+            },
+            {
+                "lat": 51.94222222222222,
+                "lon": 23.635555555555555
+            },
+            {
+                "lat": 51.99166666666667,
+                "lon": 24.134722222222223
+            },
+            {
+                "lat": 52.57055555555556,
+                "lon": 26.352500000000003
+            },
+            {
+                "lat": 52.277499999999996,
+                "lon": 31.671944444444446
+            },
+            {
+                "lat": 52.32833333333333,
+                "lon": 31.581944444444446
+            },
+            {
+                "lat": 52.4925,
+                "lon": 31.62611111111111
+            },
+            {
+                "lat": 52.51777777777777,
+                "lon": 31.5575
+            },
+            {
+                "lat": 52.56222222222222,
+                "lon": 31.674722222222222
+            },
+            {
+                "lat": 52.59638888888889,
+                "lon": 31.56722222222222
+            },
+            {
+                "lat": 52.69333333333333,
+                "lon": 31.5
+            },
+            {
+                "lat": 52.73444444444444,
+                "lon": 31.592777777777776
+            },
+            {
+                "lat": 52.79388888888889,
+                "lon": 31.586944444444445
+            },
+            {
+                "lat": 53.03444444444444,
+                "lon": 31.243333333333336
+            },
+            {
+                "lat": 53.09805555555556,
+                "lon": 31.389166666666664
+            },
+            {
+                "lat": 53.21194444444445,
+                "lon": 31.401944444444442
+            },
+            {
+                "lat": 53.19361111111111,
+                "lon": 31.57777777777778
+            },
+            {
+                "lat": 53.23111111111111,
+                "lon": 31.628333333333334
+            },
+            {
+                "lat": 53.10138888888889,
+                "lon": 31.919722222222223
+            },
+            {
+                "lat": 53.10444444444445,
+                "lon": 32.236111111111114
+            },
+            {
+                "lat": 53.21027777777778,
+                "lon": 32.447222222222216
+            },
+            {
+                "lat": 53.30361111111111,
+                "lon": 32.48833333333334
+            },
+            {
+                "lat": 53.3325,
+                "lon": 32.73361111111111
+            },
+            {
+                "lat": 53.45805555555556,
+                "lon": 32.757222222222225
+            },
+            {
+                "lat": 53.54833333333333,
+                "lon": 32.473333333333336
+            },
+            {
+                "lat": 53.651111111111106,
+                "lon": 32.41111111111111
+            },
+            {
+                "lat": 53.690555555555555,
+                "lon": 32.5
+            },
+            {
+                "lat": 53.73027777777778,
+                "lon": 32.45888888888889
+            },
+            {
+                "lat": 53.718611111111116,
+                "lon": 32.36555555555556
+            },
+            {
+                "lat": 53.814166666666665,
+                "lon": 32.13
+            },
+            {
+                "lat": 53.796388888888885,
+                "lon": 31.770555555555553
+            },
+            {
+                "lat": 54.05888888888889,
+                "lon": 31.888333333333332
+            },
+            {
+                "lat": 54.244166666666665,
+                "lon": 31.317777777777778
+            },
+            {
+                "lat": 54.4,
+                "lon": 31.266666666666666
+            },
+            {
+                "lat": 54.61666666666667,
+                "lon": 35.25
+            },
+            {
+                "lat": 54.05833333333333,
+                "lon": 35.333333333333336
+            },
+            {
+                "lat": 54.233333333333334,
+                "lon": 37.6
+            },
+            {
+                "lat": 52.733333333333334,
+                "lon": 41.36666666666667
+            },
+            {
+                "lat": 48.78333333333333,
+                "lon": 43.95
+            },
+            {
+                "lat": 47.733333333333334,
+                "lon": 43.65
+            },
+            {
+                "lat": 47.833333333333336,
+                "lon": 46.88333333333333
+            },
+            {
+                "lat": 46.21666666666667,
+                "lon": 47.71666666666667
+            },
+            {
+                "lat": 44.11666666666667,
+                "lon": 49.166666666666664
+            },
+            {
+                "lat": 45.63333333333333,
+                "lon": 41.36666666666667
+            },
+            {
+                "lat": 43.8,
+                "lon": 39.4
+            }
+        ],
+        "archive": true
+    }
+]
