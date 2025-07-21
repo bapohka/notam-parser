@@ -74,8 +74,7 @@ async function loadInitialData() {
     try {
         // Прямий запит до файлу. Це працює як для статичного сайту,
         // так і для локального сервера, який віддає статичні файли.
-        const proxyUrl = 'http://64.226.109.213:8000/load_notams';  // URL вашого проксі на Droplet
-        const response = await fetch(proxyUrl);
+        const response = await fetch('./notams_data.json');
 
         if (!response.ok) {
             throw new Error(`Помилка HTTP: ${response.status}`);
@@ -118,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         refreshButton.title = 'Ця функція доступна лише при локальному запуску з сервером.';
     }
 
-    // Завантажуємо початкові дані з проксі
+    // Завантажуємо початкові дані з локального файлу
     loadInitialData().then(() => {
         // Якщо ми в локальному середовищі, запускаємо фонове оновлення
         if (isLocalEnv) {

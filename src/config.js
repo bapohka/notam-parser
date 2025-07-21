@@ -22,7 +22,7 @@ export const TARGET_ICAOS_STRING = "UUOO UUEE UUDD UUWW URWA UUBP URRV UKBB UKKK
 
 // Параметри для кешування
 export const CACHE_KEY = 'notamCache';
-export const CACHE_STALE_MINUTES = 15;
+export const CACHE_STALE_MINUTES = 30;
 
 // Співставлення кодів ІКАО з назвами аеропортів
 export const icaoAirportNameMap = {
